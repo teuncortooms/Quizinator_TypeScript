@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+<link rel="stylesheet" href="https://ssl.gstatic.com/docs/script/css/add-ons1.css">
+<?!=HtmlService.createHtmlOutputFromFile('client/preview.css').getContent()?>
+
+    <head>
+        <?!=HtmlService.createHtmlOutputFromFile('client/preview.js').getContent()?>
+    </head>
+
+    <body>
+
+        <div id="debugger"></div>
+        <div style='margin-bottom: 20em;'>
+            <h1>
+                <?= quiz.Title ?>
+            </h1>
+            <? // Don't use templating: https://developers.google.com/apps-script/guides/html/best-practices#load_data_asynchronously_not_in_templates ?>
+                <? // alternative = cache? ?>
+                    <? // Load javascript last? https://developers.google.com/apps-script/guides/html/best-practices#load_javascript_last ?>
+
+                        <div>
+                            <table>
+                                <? for (var i = 0; i < quiz.Exercises.length; i++){ ?>
+                                    <tr>
+                                        <td>
+                                            <h3 id='ex<?= i+1 ?>'>
+                                                <?= quiz.Exercises[i].Description ?>
+                                            </h3>
+                                        </td>
+
+                                        <? var itemIds = []; ?>
+                                            <? for (var k = 0; k < quiz.Exercises[i].ExerciseItems.length; k++){ ?>
+                                                <? var itemId = "Ex" + (i+1) + "_item" + (k+1); ?>
+                                                    <? itemIds.push(itemId); ?>
+                                                        <? } ?>
+                                                            <? var itemIdsJson = JSON.stringify(itemIds); ?>
+
+                                                                <? if (quiz.Exercises[i].Type != 'B') { ?>
+                                                                    <td id='showallanswers' style="width:60px;"><span style="font-weight: bold">Answers</span><br>
+                                                                        <a style="font-size: smaller" onclick='showAllAnswers("<?= itemIdsJson ?>")'>show</a> / <a style="font-size: smaller" onclick='hideAllAnswers("<?= itemIdsJson ?>")'>hide</a></td>
+                                    </tr>
+                                    <? } ?>
+
+                                        <? if (quiz.Exercises[i].Type == 'B') { ?>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <table style='border-style: solid; border-width: 1px; padding: 0px 15px'>
+                                                        <tr>
+                                                            <td>
+                                                                <p id='shuffledTranslations'>
+                                                                    <?= quiz.Exercises[i].Box ?>
+                                                                </p>
+                                                            </td>
+                                                            <td><a onclick='shuffleTranslations()'>Refresh</a>
+                                                            </td>
+                                                        </tr>
+                                                    </table>
+                                                </td>
+                                                <td id='showallanswers' style="width:60px;"><span style="font-weight: bold">Answers</span><br>
+                                                    <a style="font-size: smaller" onclick='showAllAnswers("<?= itemIdsJson ?>")'>show</a> / <a style="font-size: smaller" onclick='hideAllAnswers("<?= itemIdsJson ?>")'>hide</a></td>
+                                            </tr>
+                                            <? } ?>
+
+                                                <? for (var k = 0; k < quiz.Exercises[i].ExerciseItems.length; k++){ ?>
+                                                    <? var itemNo = k + 1; ?>
+                                                        <? var itemId = "Ex" + (i+1) + "_item" + (k+1); ?>
+
+                                                            <tr id='itemtr<?= itemId ?>'>
+                                                                <td>
+                                                                    <p id='item<?= itemId ?>'>
+                                                                        <?!= itemNo + '. ' + quiz.Exercises[i].ExerciseItems[k].Question ?>
+                                                                    </p>
+                                                                </td>
+                                                                <td style="font-size: smaller" id='showanswer<?=itemId?>'><a onclick='showAnswer("<?=itemId?>")'>show</a></td>
+                                                                <td hidden=true style="font-size: smaller" id='answer<?= itemId ?>'>
+                                                                    <?!=quiz.Exercises[i].ExerciseItems[k].Answer ?> (<a onclick='hideAnswer("<?=itemId?>")'>hide</a>)</td>
+                                                                <td style="font-size: smaller" id='dropdowntd<?=itemId?>'><a onclick='configureDropdown("<?=itemId?>")'>change</a></td>
+                                                            </tr>
+                                                            <? } ?>
+                                                                <tr style="height:30px;"></tr>
+                                                                <? } ?>
+                            </table>
+                        </div>
+
+                        <form id='quizPreview' onsubmit='return handleFormSubmit(this);'>
+                            <div id='norm' style='font-size:small;'>
+                                <p style='border:1px solid lightgrey; border-radius:5px; padding:5px'>
+                                    <span>Choose a norm: </span>
+                                    <input type=radio name='percentage' value=70>70% (havo) </input>
+                                    <input type=radio name='percentage' value=72 checked>72% (havo/vwo) </input>
+                                    <input type=radio name='percentage' id='percentage_other' value='other'>Other <input type='number' id='other_percentage' name='other_percentage' onkeydown="selectOther()" style='width:45px' /> %
+                                    <span style='font-size:medium; font-weight: bold;'> = 6</span>
+                                </p>
+                            </div>
+                            <input id='buttonGenerate' class='action' type='submit' value='CREATE GOOGLE DOCS' /><br>
+                            <div id='advanced'>
+                                <a onclick='showAdvanced()' style='font-size:x-small;'>Show advanced options</a>
+                            </div>
+                            <div id='msg' style='font-style:italic; font-size:small; color:red'></div>
+                        </form>
+
+        </div>
+
+
+    </body>
+
+</html>

@@ -1,0 +1,201 @@
+<script>
+    var quiz = quiz;
+
+    /**
+     * Use this for html logging
+     */
+    function logHTML(array) {
+        //  var array = ["test", units, units.length];
+        var t;
+        for (t = 0; t < array.length; t++) {
+            var testPara = document.createElement('P');
+            var testText = document.createTextNode(array[t]);
+            testPara.appendChild(testText);
+            document.getElementById("debugger").appendChild(testPara);
+        }
+    }
+
+
+    /**
+     * When button is clicked
+     */
+    function clickAction() {
+        var span = document.getElementById('nb');
+        span.innerHTML = "  <img class='center-cropped' src='https://i.stack.imgur.com/h6viz.gif'> Can take a long time. Don't click again.";
+        google.script.run.generateQuizForm();
+    }
+
+
+    /**
+     * Functions to show and hide answers
+     */
+    function showAnswer(itemId) {
+        var showanswerid = 'showanswer' + itemId;
+        var answerid = 'answer' + itemId;
+        document.getElementById(showanswerid).setAttribute("hidden", true);
+        document.getElementById(answerid).removeAttribute("hidden");
+    }
+
+    function hideAnswer(itemId) {
+        var showanswerid = 'showanswer' + itemId;
+        var answerid = 'answer' + itemId;
+        document.getElementById(answerid).setAttribute("hidden", true);
+        document.getElementById(showanswerid).removeAttribute("hidden");
+    }
+
+    function showAllAnswers(itemIds) {
+        itemIds = JSON.parse(itemIds);
+        for (var i = 0; i < itemIds.length; i++) {
+            showAnswer(itemIds[i]);
+        }
+    }
+
+    function hideAllAnswers(itemIds) {
+        itemIds = JSON.parse(itemIds);
+        for (var e in itemIds) {
+            hideAnswer(itemIds[e]);
+        }
+    }
+
+
+    /**
+     * Functions to show and hide advanced options
+     */
+    function showAdvanced() {
+        document.getElementById("advanced").innerHTML = "" +
+            "<a onclick='hideAdvanced()' style='font-size:x-small;'>Hide advanced options</a><br><br>" +
+            "<button id='buttonGenerateForm' class='create' type='button' onclick='clickAction()'>Create Google Form (beta)</button>" +
+            "<span id='nb' style='font-size:x-small; color:red'>  Note: Answer key will not be imported into form. (Not available yet.)</span>";
+    }
+
+    function hideAdvanced() {
+        document.getElementById("advanced").innerHTML = "" +
+            "<a onclick='showAdvanced()' style='font-size:x-small;'>Show advanced options</a>";
+    }
+
+
+    /**
+     * Norm: select 'other' radiobutton when value is entered in textbox
+     */
+    function selectOther() {
+        document.getElementById("percentage_other").checked = true;
+    }
+
+    /**
+     * Function to generate quiz
+     */
+    function handleFormSubmit(formObject) { // Sends input to function to handle input and UserProperties
+
+
+
+        if ((document.getElementById('percentage_other').checked) && document.getElementById('other_percentage').value == "") {
+            document.getElementById('other_percentage').style.backgroundColor = "lightpink";
+            document.getElementById('other_percentage').style.borderColor = "red";
+            return false;
+        } else {
+            google.script.run.generateQuiz(formObject);
+        }
+
+
+
+
+    }
+
+
+    /**
+     * configureDropdown gets list of available words from idioms
+     * createDropdown then creates the dropdown menu
+     */
+    function configureDropdown(itemId) {
+        google.script.run
+            .withSuccessHandler(createDropdown)
+            .withUserObject(itemId)
+            .button_changeItem_click();
+    }
+
+    function createDropdown(availableIdioms, itemId) {
+
+        //  var options = ['a', 'b', 'c', 'd'];
+        var sel, opt, i, elementExists;
+
+        // remove any existing dropdown
+        elementExists = document.getElementById("dropdown");
+        if (document.getElementById("dropdown") != null) {
+            var parent = document.getElementById("dropdown").parentNode;
+            parent.removeChild(document.getElementById("dropdown"));
+            parent.lastChild.removeAttribute("hidden");
+        };
+
+        // create dropdown
+        sel = document.createElement("select");
+        sel.id = "dropdown";
+        sel.name = "dropdown" + itemId;
+        //  sel.onchange = "replaceItem(" + itemId + " , 1, this.value)"; // DOESN'T WORK
+        sel.setAttribute("onchange", "replaceItem(" + itemId + ", this.value)");
+
+        // append dropdown and remove word "Change" behind this item
+        document.getElementById("dropdowntd" + itemId).firstChild.setAttribute("hidden", true);
+        document.getElementById("dropdowntd" + itemId).appendChild(sel);
+
+        // populate dropdown with options
+        opt = document.createElement("option");
+        opt.text = "<select an item>";
+        opt.value = itemId; // ?
+        document.getElementById("dropdown").appendChild(opt);
+
+        for (i = 0; i < availableIdioms.length; i++) {
+            opt = document.createElement("option");
+            opt.text = availableIdioms[i].Word;
+            opt.value = availableIdioms[i].Id;
+            document.getElementById("dropdown").appendChild(opt);
+        }
+    }
+
+
+    /**
+     * Calls function on server to replace an idiom item
+     * loadNewItem loads the new item
+     */
+    function replaceItem(itemId, newIdiomId) {
+        // needs params itemIndex, exerciseIndex
+        var indexArr = itemId.split("Ex")[0].split("_item");
+        var exerciseIndex = indexArr[0];
+        var itemIndex = indexArr[1];
+        console.log(indexArr);
+        console.log(exerciseIndex);
+        console.log(itemIndex);
+
+        google.script.run
+            .withSuccessHandler(loadNewItem)
+            .withUserObject(itemId) // ?
+            .dropDown_items_onChange(itemIndex, exerciseIndex, newIdiomId);
+    }
+
+
+    function loadNewItem(newItem, itemId) {
+
+        // insert new item
+        var itemtr = document.getElementById('itemtr' + itemId);
+
+        itemtr.innerHTML = "" +
+            "<td><p id='item" + itemId + "'>" + itemNo + ". " + newItem.Question + "</p></td>" +
+            "<td style='font-size: smaller' id='showanswer" + itemId + "'><a onclick='showAnswer(" + itemId + ")'>show</a></td>" +
+            "<td hidden=true style='font-size: smaller' id='answer" + itemId + "'>" + newItem.Answer + " (<a onclick='hideAnswer(" + itemId + ")'>hide</a>)</td>" +
+            "<td style='font-size: smaller' id='dropdowntd" + itemId + "'><a onclick='configureDropdown(" + itemId + ")'>change</a></td>";
+    }
+
+
+    /**
+     * (Re)shuffle translations box
+     */
+    function shuffleTranslations() {
+        google.script.run
+            .withSuccessHandler(refreshBox)
+            .shuffleTranslations();
+    }
+
+    function refreshBox(shuffledTranslations) {
+        document.getElementById('shuffledTranslations').style.color = "black";
+        document.getElementById('shuffledTranslations').innerHTML = shuffledTranslations;
+    }
+</script>

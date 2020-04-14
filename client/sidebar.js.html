@@ -1,0 +1,158 @@
+<script>
+    /**
+     * Use this for logging
+     */
+    function logHTML(array) {
+        //  var array = ["test", units, units.length];
+        var t;
+        for (t = 0; t < array.length; t++) {
+            var testPara = document.createElement('P');
+            var testText = document.createTextNode(array[t]);
+            testPara.appendChild(testText);
+            document.body.appendChild(testPara);
+        }
+    }
+
+
+    /**
+     * Return a formatted date (for use in sidebar)
+     */
+
+    // Helper function
+    function addZero(i) {
+        if (i < 10) {
+            i = "0" + i;
+        }
+        return i;
+    }
+
+    // Return a formatted date
+    function getDateAndTime() {
+        var d = new Date();
+        var year = String(d.getFullYear());
+        var month = String(addZero(d.getMonth() + 1));
+        var day = String(addZero(d.getDate()));
+        var h = String(addZero(d.getHours()));
+        var m = String(addZero(d.getMinutes()));
+        var s = String(addZero(d.getSeconds()));
+        var fullDateAndTime = year + month + day + ' ' + h + ":" + m + ":" + s;
+        return fullDateAndTime;
+    }
+
+
+    /**
+     * Functions to load form
+     */
+    function loadForm() {
+        google.script.run
+            .withSuccessHandler(buildForm)
+            .sidebar_loadUnits();
+    }
+
+    function buildForm(units) {
+        var option;
+        var i;
+        var unitno;
+        var html;
+
+        html = "" +
+            "<br>" +
+            "<button id='buttonUnits' type='button' onclick='loadForm()'>Click here to reload the form</button><br>" +
+            "<br>" +
+            "<b>Choose Unit(s):</b><br>" +
+            "<select size='5' id='units' name='inputUnits' style='width:250px' required multiple>" +
+            "</select><br>" +
+            "<br>" +
+            "" +
+            "<b>Title</b><br>" +
+            "<input id='inputName' name='inputName' type='text' value='Title' size='35' style='width:250px' required /><br>" +
+            "<br>" +
+            "" +
+            "<b>Exercise 1</b><br>" +
+            "<select name='inputExTypeArr' style='width:250px' required>" +
+            "  <option value='A' selected>Type A: Translate the underlined words into Dutch.</option>" +
+            "  <option value='B'>Type B: Complete the sentences with words from the box and translate into English.</option>" +
+            "  <option value='C'>Type C: Complete the sentences with the translation of the Dutch words.</option>" +
+            "</select><br>" +
+            "How many items?  <input name='inputItemsPerExArr' type='number' value=5 style='width:45px' required /><br><br>" +
+            "" +
+            "<b>Exercise 2</b><br>" +
+            "<select name='inputExTypeArr' style='width:250px' required>" +
+            "  <option value='A'>Type A: Translate the underlined words into Dutch.</option>" +
+            "  <option value='B' selected>Type B: Complete the sentences with words from the box and translate into English.</option>" +
+            "  <option value='C'>Type C: Complete the sentences with the translation of the Dutch words.</option>" +
+            "</select><br>" +
+            "How many items?  <input name='inputItemsPerExArr' type='number' value=8 style='width:45px' required /><br><br>" +
+            "" +
+            "<b>Exercise 3</b><br>" +
+            "<select name='inputExTypeArr' style='width:250px' required>" +
+            "  <option value='A'>Type A: Translate the underlined words into Dutch.</option>" +
+            "  <option value='B'>Type B: Complete the sentences with words from the box and translate into English.</option>" +
+            "  <option value='C' selected>Type C: Complete the sentences with the translation of the Dutch words.</option>" +
+            "</select><br>" +
+            "How many items?  <input name='inputItemsPerExArr' type='number' value=10 style='width:45px' required /><br><br>" +
+            "" +
+            "" +
+            "<input id='submit' class='action' type='submit' value='Preview Quiz' /><br>" +
+            "<br>" +
+            "<div id='msg' style='font-style:italic; font-size:small; color:red'></div>" +
+            "";
+
+
+        document.getElementById("quizInput").innerHTML = html;
+
+        for (i = 0; i < units.length; i++) {
+            option = document.createElement("OPTION");
+            unitno = String(units[i]).match(/\d+/)[0];
+
+            option.setAttribute("id", units[i]);
+            option.setAttribute("value", units[i]);
+            option.setAttribute("label", units[i]);
+            option.setAttribute("style", "text-align:left");
+            option.setAttribute("onclick", "document.getElementById('inputName').value='SO Unit " + unitno + " versie " + getDateAndTime() + "'");
+
+            document.getElementById("units").appendChild(option);
+        }
+
+        setDefaults();
+        preventFormSubmit();
+    }
+
+    // helper function: prevents the form elements from submitting before the onclick handler can finish
+    // (without it, when a form element has no action attribute specified, it will submit to a blank page)
+    function preventFormSubmit() {
+        var forms = document.querySelectorAll('form');
+        for (var i = 0; i < forms.length; i++) {
+            forms[i].addEventListener('submit', function(event) {
+                event.preventDefault();
+            });
+        }
+    }
+
+    // helper function: set default form values, like default quiz title
+    function setDefaults() {
+        document.getElementById("inputName").value = 'SO ' + getDateAndTime();
+    }
+
+
+    /**
+     * Handle form submit
+     */
+    function handleFormSubmit(formObject) { // Send input to function
+        var form = document.getElementById('quizInput');
+
+        // reset status message and error colours
+        document.getElementById('msg').innerHTML = "";
+        document.getElementById('units').style.backgroundColor = '';
+
+        // msg Creating quiz... (alternative: document.getElementById('submit').value = 'Creating quiz...';)
+        document.getElementById('msg').innerHTML = "Creating quiz...";
+
+        google.script.run
+            .withFailureHandler(document.getElementById('msg').innerHTML = "Failed")
+            .withSuccessHandler(document.getElementById('msg').innerHTML = "")
+            .button_previewQuiz_click(formObject); // if validated, send to server function
+    }
+
+    window.addEventListener('load', loadForm);
+</script>

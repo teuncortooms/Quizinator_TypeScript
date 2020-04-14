@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <base target="_top">
+    <link rel="stylesheet" href="https://ssl.gstatic.com/docs/script/css/add-ons1.css">
+    <?!=HtmlService.createHtmlOutputFromFile('client/sidebar.css').getContent()?>
+        <?!=HtmlService.createHtmlOutputFromFile('client/sidebar.js').getContent()?>
+</head>
+
+<body>
+
+    <form id="quizInput" onsubmit="handleFormSubmit(this)">
+        <br><br><br><br><br><br>
+        <p>Loading form...</p>
+        <p>Click <a onclick="loadForm()">here</a> if the form doesn't load automatically.</p>
+    </form>
+
+</body>
+
+</html>

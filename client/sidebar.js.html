@@ -3,11 +3,11 @@
      * Use this for logging
      */
     function logHTML(array) {
-        //  var array = ["test", units, units.length];
-        var t;
+        //  let array = ["test", units, units.length];
+        let t;
         for (t = 0; t < array.length; t++) {
-            var testPara = document.createElement('P');
-            var testText = document.createTextNode(array[t]);
+            let testPara = document.createElement('P');
+            let testText = document.createTextNode(array[t]);
             testPara.appendChild(testText);
             document.body.appendChild(testPara);
         }
@@ -28,14 +28,14 @@
 
     // Return a formatted date
     function getDateAndTime() {
-        var d = new Date();
-        var year = String(d.getFullYear());
-        var month = String(addZero(d.getMonth() + 1));
-        var day = String(addZero(d.getDate()));
-        var h = String(addZero(d.getHours()));
-        var m = String(addZero(d.getMinutes()));
-        var s = String(addZero(d.getSeconds()));
-        var fullDateAndTime = year + month + day + ' ' + h + ":" + m + ":" + s;
+        let d = new Date();
+        let year = String(d.getFullYear());
+        let month = String(addZero(d.getMonth() + 1));
+        let day = String(addZero(d.getDate()));
+        let h = String(addZero(d.getHours()));
+        let m = String(addZero(d.getMinutes()));
+        let s = String(addZero(d.getSeconds()));
+        let fullDateAndTime = year + month + day + ' ' + h + ":" + m + ":" + s;
         return fullDateAndTime;
     }
 
@@ -50,10 +50,10 @@
     }
 
     function buildForm(units) {
-        var option;
-        var i;
-        var unitno;
-        var html;
+        let option;
+        let i;
+        let unitno;
+        let html;
 
         html = "" +
             "<br>" +
@@ -121,8 +121,8 @@
     // helper function: prevents the form elements from submitting before the onclick handler can finish
     // (without it, when a form element has no action attribute specified, it will submit to a blank page)
     function preventFormSubmit() {
-        var forms = document.querySelectorAll('form');
-        for (var i = 0; i < forms.length; i++) {
+        let forms = document.querySelectorAll('form');
+        for (let i = 0; i < forms.length; i++) {
             forms[i].addEventListener('submit', function(event) {
                 event.preventDefault();
             });
@@ -139,7 +139,7 @@
      * Handle form submit
      */
     function handleFormSubmit(formObject) { // Send input to function
-        var form = document.getElementById('quizInput');
+        let form = document.getElementById('quizInput');
 
         // reset status message and error colours
         document.getElementById('msg').innerHTML = "";

@@ -3,8 +3,8 @@
 //  * preview quiz
 //  */
 // function addUnderlineHTML(sentence, word) {
-//     var sentenceWithLayout;
-//     var wordIndex;
+//     let sentenceWithLayout;
+//     let wordIndex;
 //     wordIndex = sentence.toLowerCase().indexOf(word.toLowerCase());
 //     sentenceWithLayout = [
 //         sentence.slice(0, wordIndex),
@@ -16,10 +16,10 @@
 //     return sentenceWithLayout;
 // }
 // function openPreviewStep2(exercises) {
-//     var template = HtmlService.createTemplateFromFile('client/preview');
-//     var html;
-//     var exercisesWithLayout = exercises;
-//     var i, k;
+//     let template = HtmlService.createTemplateFromFile('client/preview');
+//     let html;
+//     let exercisesWithLayout = exercises;
+//     let i, k;
 //     // put underline html for exercise type 1 in exercises array
 //     for (i = 0; i < exercises.length - 1; i++) {
 //         if (exercises[i][0] == 1) {
@@ -41,20 +41,20 @@
 // * (newItemId is optional)
 // */
 // function replaceItem(itemNo, type, newItemId) {
-//     var userProperties = PropertiesService.getUserProperties();
-//     var exercises = JSON.parse(userProperties.getProperty("exercises"));
-//     var idioms = [];
-//     var itemIds = [];
-//     var randomItemIdArr;
-//     var selectedIdiom;
-//     var newExerciseItem;
-//     var i, j;
-//     var regEx, translation, translationsTemp = [], shuffledTranslations = [];
-//     var unique = false;
+//     let userProperties = PropertiesService.getUserProperties();
+//     let exercises = JSON.parse(userProperties.getProperty("exercises"));
+//     let idioms = [];
+//     let itemIds = [];
+//     let randomItemIdArr;
+//     let selectedIdiom;
+//     let newExerciseItem;
+//     let i, j;
+//     let regEx, translation, translationsTemp = [], shuffledTranslations = [];
+//     let unique = false;
 //     Logger.log("type " + type);
 //     // populate idioms array from cache // CHANGE N < 5 IF getAllIdiomsFromSelectedUnits CHANGES
-//     for (var n = 1; n < 5; n++) {
-//         var temp = JSON.parse(userProperties.getProperty("idioms" + n));
+//     for (let n = 1; n < 5; n++) {
+//         let temp = JSON.parse(userProperties.getProperty("idioms" + n));
 //         if (temp == null) {
 //             break;
 //         }
@@ -165,7 +165,7 @@
 //     }
 //     Logger.log(exercises);
 //     // cache the exercises again to be used to generate the quiz
-//     var exercisesStringified = JSON.stringify(exercises);
+//     let exercisesStringified = JSON.stringify(exercises);
 //     userProperties.setProperty('exercises', exercisesStringified);
 //     return newExerciseItem;
 // }
@@ -173,15 +173,15 @@
 //  * returns a list of words from idioms that are not yet used in the exercises
 //  */
 // function loadItemOptions() {
-//     var userProperties = PropertiesService.getUserProperties();
-//     var exercises = JSON.parse(userProperties.getProperty("exercises"));
-//     var n, temp, idioms = [];
-//     var itemIds = [];
-//     var opt;
-//     var optionsText = [];
-//     var optionsValues = [];
-//     var options = [];
-//     var i, j, available;
+//     let userProperties = PropertiesService.getUserProperties();
+//     let exercises = JSON.parse(userProperties.getProperty("exercises"));
+//     let n, temp, idioms = [];
+//     let itemIds = [];
+//     let opt;
+//     let optionsText = [];
+//     let optionsValues = [];
+//     let options = [];
+//     let i, j, available;
 //     // populate idioms array from cache // CHANGE N < 5 IF getAllIdiomsFromSelectedUnits CHANGES
 //     for (n = 1; n < 5; n++) {
 //         temp = JSON.parse(userProperties.getProperty("idioms" + n));
@@ -216,10 +216,10 @@
 //     return options;
 // }
 // function shuffleTranslations() {
-//     var userProperties = PropertiesService.getUserProperties();
-//     var exercises = JSON.parse(userProperties.getProperty("exercises"));
-//     var shuffledTranslations;
-//     for (var i = 0; i < exercises.length; i++) {
+//     let userProperties = PropertiesService.getUserProperties();
+//     let exercises = JSON.parse(userProperties.getProperty("exercises"));
+//     let shuffledTranslations;
+//     for (let i = 0; i < exercises.length; i++) {
 //         if (exercises[i][0] == 2) {
 //             shuffledTranslations = exercises[i][7][0];
 //         }

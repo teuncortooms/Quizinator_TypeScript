@@ -3,20 +3,20 @@ class IdiomsStore {
     private selectedIndices: number[];
 
     get Idioms() { return this.idioms; }
-    get SelectedIdioms(): Idiom[] { 
+    get SelectedIdioms(): Idiom[] {
         let selectedIdioms: Idiom[] = [];
         for (let i = 0; i < this.selectedIndices.length; i++) {
             let n: number = this.selectedIndices[i];
             selectedIdioms[i] = this.idioms[n];
         };
-        return selectedIdioms; 
+        return selectedIdioms;
     }
     get AvailableIdioms(): Idiom[] {
         let availableIdioms: Idiom[] = [];
         for (let i = 0; i < this.idioms.length; i++) {
             let isAvailable = true;
             for (let j = 0; j < this.selectedIndices.length; j++) {
-                if (this.idioms[i].Id == this.selectedIndices[j]) {
+                if (i == this.selectedIndices[j]) {
                     isAvailable = false;
                 }
             }
@@ -33,30 +33,41 @@ class IdiomsStore {
         this.selectedIndices = this.getRandomIndices(selectionSize);
     }
 
-    public Load(str: string){
+    public Load(str: string) {
         let json = JSON.parse(str);
         this.idioms = [];
         this.selectedIndices = json.selectedIndices;
-        for(let i = 0; i < json.idioms.length; i++){
+        for (let i = 0; i < json.idioms.length; i++) {
             this.idioms[i] = new Idiom();
             this.idioms[i].Load(json.idioms[i]);
         }
     }
 
     public ReplaceIdiom(oldId: number, newId: number) {
-        let index: number;
+        let selectedIndicesIndex: number;
+        let newIndex: number;
 
-        for (let i = 0; i < this.selectedIndices.length; i++){
-            if (this.selectedIndices[i] == oldId){
-                this.selectedIndices[i] = newId;
+        // find newId in idioms
+        for (let i = 0; i < this.idioms.length && newIndex == null; i++) {
+            if (this.idioms[i].Id == newId) {
+                newIndex = i;
             }
         }
+        // find oldId in selectedIndices
+        for (let i = 0; i < this.selectedIndices.length && selectedIndicesIndex == null; i++) {
+            let selectedIndex = this.selectedIndices[i];
+            if (this.idioms[selectedIndex].Id == oldId) {
+                selectedIndicesIndex = i;
+            }
+        }
+        // replace index in selectedIndices
+        this.selectedIndices[selectedIndicesIndex] = newIndex;
     }
 
     public GetIdiom(id: number): Idiom {
         let requestedIdiom: Idiom;
-        for (let idiom of this.idioms){
-            if (idiom.Id == id){
+        for (let idiom of this.idioms) {
+            if (idiom.Id == id) {
                 requestedIdiom = idiom;
             }
         }

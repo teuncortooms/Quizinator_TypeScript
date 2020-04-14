@@ -40,6 +40,8 @@ class MainController {
         dataString = CacheHelper.Load('quiz');
         this.quiz = new Quiz();
         this.quiz.Load(dataString);
+
+        Logger.log(this.quiz);
     }
 
     public previewQuiz() {
@@ -62,6 +64,8 @@ class MainController {
         this.quiz.Exercises[exerciseIndex].ReplaceItem(itemIndex, newIdiom);
         newItem = this.quiz.Exercises[exerciseIndex].ExerciseItems[itemIndex];
 
+        Logger.log(this.quiz);
+        
         // Save to cache
         this.save();
 

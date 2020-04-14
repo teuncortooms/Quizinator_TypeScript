@@ -10,7 +10,7 @@ function onInstall() {
 }
 
 function menuItem_openSidebar_click() {
-  var html = HtmlService.createTemplateFromFile('client/sidebar').evaluate()
+  let html = HtmlService.createTemplateFromFile('client/sidebar').evaluate()
     .setSandboxMode(HtmlService.SandboxMode.IFRAME)
     .setTitle("Cot's Quizinator");
   SpreadsheetApp.getUi().showSidebar(html);
@@ -30,12 +30,10 @@ function button_previewQuiz_click(formObject: any) {
 function button_changeItem_click() {
   let mainController = new MainController;
   mainController.Load();
-  Logger.log("available:");
-  Logger.log(mainController.IdiomsStore.AvailableIdioms);
   return mainController.IdiomsStore.AvailableIdioms;
 }
 
-function dropDown_items_onChange(exerciseIndex: number, itemIndex: number, idiomId: number) {
+function dropDown_item_select(exerciseIndex: number, itemIndex: number, idiomId: number) {
   let mainController = new MainController;
   mainController.Load();
   return mainController.ReplaceItem(exerciseIndex, itemIndex, idiomId);

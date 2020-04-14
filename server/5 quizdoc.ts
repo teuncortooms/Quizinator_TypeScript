@@ -4,11 +4,11 @@
 
 function createDoc(docName){
 
-  var quizDoc = DocumentApp.create(docName);
-  var quizDocBody = quizDoc.getBody();
-  var quizDocHeader = quizDoc.addHeader();
+  let quizDoc = DocumentApp.create(docName);
+  let quizDocBody = quizDoc.getBody();
+  let quizDocHeader = quizDoc.addHeader();
 
-//  var quizDocFile = DriveApp.getFileById(quizDoc.getId());  
+//  let quizDocFile = DriveApp.getFileById(quizDoc.getId());  
 //  DriveApp.getFolderById('0B7rkLeoPDJXbUmUzMXI4eFY5bms').addFile(quizDocFile);
 //  DriveApp.getRootFolder().removeFile(quizDocFile);
 
@@ -23,22 +23,22 @@ function createDoc(docName){
  * insert exercises into the doc based on the idioms array and form input.
  */
 function insertExercises(exercises, quizDocBody){
-  var i
-  var k
-//  var exercisesTable = [];
-  var table
-  var row
-  var cell1
-  var listItem
-  var listId = "notsetyet"
-  var regExp
-  var word
-  var foundWord
-  var foundWordText
-  var foundWordStart
-  var foundWordEnd
-  var u
-  var uc
+  let i
+  let k
+//  let exercisesTable = [];
+  let table
+  let row
+  let cell1
+  let listItem
+  let listId = "notsetyet"
+  let regExp
+  let word
+  let foundWord
+  let foundWordText
+  let foundWordStart
+  let foundWordEnd
+  let u
+  let uc
 
   for (i = 0; i < exercises.length - 1; i++){    // for each exercise in array (-1 to ignore quiz title at end of array)
     quizDocBody.appendParagraph(exercises[i][1]).setHeading(DocumentApp.ParagraphHeading.HEADING3)    //append heading into doc
@@ -98,7 +98,7 @@ function insertExercises(exercises, quizDocBody){
 //    
 //    if (exercises[i][0] == 1) { 
 //      for (k = 0; k < exercises[i][2].length; k++) {
-//        var word = exercises[i][3][k];
+//        let word = exercises[i][3][k];
 //        foundWord = table.findText(word); 
 //        if (foundWord) {
 //          foundWordText = foundWord.getElement().asText(); // identify word position and underline
@@ -116,19 +116,19 @@ function insertExercises(exercises, quizDocBody){
  * generate quiz key doc
  */
 function createKey(quizDoc, exercises, docName, norm) {
-  var keyDoc
-  var i
-  var k
-//  var exercisesTable = [];
-  var table
-  var row
-  var cell1
-  var listItem
-  var listId = "notsetyet"
-  var maxPoints = 0;
-  var normTable1 = [];
-  var normTable2 = [];
-  var cijfer
+  let keyDoc
+  let i
+  let k
+//  let exercisesTable = [];
+  let table
+  let row
+  let cell1
+  let listItem
+  let listId = "notsetyet"
+  let maxPoints = 0;
+  let normTable1 = [];
+  let normTable2 = [];
+  let cijfer
   
   
   keyDoc = createDoc(docName + ' key');
@@ -190,13 +190,13 @@ function createKey(quizDoc, exercises, docName, norm) {
  * generate quiz doc
  */
 function generateQuiz(formObject) {
-  var userProperties = PropertiesService.getUserProperties();
-  var exercises = JSON.parse(userProperties.getProperty("exercises"));
-  var norm 
-  var quizDoc; 
-  var docName = exercises[exercises.length - 1]; 
-  var keyDoc;
-  var successMessage
+  let userProperties = PropertiesService.getUserProperties();
+  let exercises = JSON.parse(userProperties.getProperty("exercises"));
+  let norm 
+  let quizDoc; 
+  let docName = exercises[exercises.length - 1]; 
+  let keyDoc;
+  let successMessage
   
   quizDoc = createDoc(docName);
   insertExercises(exercises, quizDoc.getBody());

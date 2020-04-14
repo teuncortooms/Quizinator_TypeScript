@@ -20,7 +20,7 @@
 
                         <div>
                             <table>
-                                <? for (var i = 0; i < quiz.Exercises.length; i++){ ?>
+                                <? for (let i = 0; i < quiz.Exercises.length; i++){ ?>
                                     <tr>
                                         <td>
                                             <h3 id='ex<?= i+1 ?>'>
@@ -28,12 +28,12 @@
                                             </h3>
                                         </td>
 
-                                        <? var itemIds = []; ?>
-                                            <? for (var k = 0; k < quiz.Exercises[i].ExerciseItems.length; k++){ ?>
-                                                <? var itemId = "Ex" + (i+1) + "_item" + (k+1); ?>
+                                        <? let itemIds = []; ?>
+                                            <? for (let k = 0; k < quiz.Exercises[i].ExerciseItems.length; k++){ ?>
+                                                <? let itemId = "Ex" + (i+1) + "_item" + (k+1); ?>
                                                     <? itemIds.push(itemId); ?>
                                                         <? } ?>
-                                                            <? var itemIdsJson = JSON.stringify(itemIds); ?>
+                                                            <? let itemIdsJson = JSON.stringify(itemIds); ?>
 
                                                                 <? if (quiz.Exercises[i].Type != 'B') { ?>
                                                                     <td id='showallanswers' style="width:60px;"><span style="font-weight: bold">Answers</span><br>
@@ -62,24 +62,25 @@
                                             </tr>
                                             <? } ?>
 
-                                                <? for (var k = 0; k < quiz.Exercises[i].ExerciseItems.length; k++){ ?>
-                                                    <? var itemNo = k + 1; ?>
-                                                        <? var itemId = "Ex" + (i+1) + "_item" + (k+1); ?>
+                                                <? for (let k = 0; k < quiz.Exercises[i].ExerciseItems.length; k++){ ?>
+                                                    <? let exNo = i + 1; ?>
+                                                        <? let itemNo = k + 1; ?>
+                                                            <? let itemId = "Ex" + exNo + "_item" + itemNo; ?>
 
-                                                            <tr id='itemtr<?= itemId ?>'>
-                                                                <td>
-                                                                    <p id='item<?= itemId ?>'>
-                                                                        <?!= itemNo + '. ' + quiz.Exercises[i].ExerciseItems[k].Question ?>
-                                                                    </p>
-                                                                </td>
-                                                                <td style="font-size: smaller" id='showanswer<?=itemId?>'><a onclick='showAnswer("<?=itemId?>")'>show</a></td>
-                                                                <td hidden=true style="font-size: smaller" id='answer<?= itemId ?>'>
-                                                                    <?!=quiz.Exercises[i].ExerciseItems[k].Answer ?> (<a onclick='hideAnswer("<?=itemId?>")'>hide</a>)</td>
-                                                                <td style="font-size: smaller" id='dropdowntd<?=itemId?>'><a onclick='configureDropdown("<?=itemId?>")'>change</a></td>
-                                                            </tr>
-                                                            <? } ?>
-                                                                <tr style="height:30px;"></tr>
+                                                                <tr id='itemtr<?= itemId ?>'>
+                                                                    <td>
+                                                                        <p id='item<?= itemId ?>'>
+                                                                            <?!= itemNo + '. ' + quiz.Exercises[i].ExerciseItems[k].Question ?>
+                                                                        </p>
+                                                                    </td>
+                                                                    <td style="font-size: smaller" id='showanswer<?=itemId?>'><a onclick='showAnswer("<?=itemId?>")'>show</a></td>
+                                                                    <td hidden=true style="font-size: smaller" id='answer<?= itemId ?>'>
+                                                                        <?!=quiz.Exercises[i].ExerciseItems[k].Answer ?> (<a onclick='hideAnswer("<?=itemId?>")'>hide</a>)</td>
+                                                                    <td style="font-size: smaller" id='dropdowntd<?=itemId?>'><a onclick='configureDropdown("<?=itemId?>")'>change</a></td>
+                                                                </tr>
                                                                 <? } ?>
+                                                                    <tr style="height:30px;"></tr>
+                                                                    <? } ?>
                             </table>
                         </div>
 

@@ -2,13 +2,13 @@ class ExerciseItemTypeD extends ExerciseItem {
     // Type D: "Translate the words into Dutch."
 
     // override
-    protected setQuestion(idiom: Idiom) {
-        this.question = idiom.Word;
+    protected setQuestion() {
+        this.question = this.word;
     }
 
     // override
-    protected setAnswer(idiom: Idiom) {
-        this.answer = idiom.Translation;
+    protected setAnswer() {
+        this.answer = this.translation;
     }
 
 }

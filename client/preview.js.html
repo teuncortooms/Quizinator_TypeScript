@@ -131,7 +131,7 @@
         for (let i = 0; i < availableIdioms.length; i++) {
             opt = document.createElement("option");
             opt.text = availableIdioms[i].word;
-            opt.value = availableIdioms[i].id;
+            opt.value = availableIdioms[i].idiomId;
             document.getElementById("dropdown").appendChild(opt);
         }
     }
@@ -158,11 +158,10 @@
         let exerciseIndex = referenceArr[0] - 1;
         let itemIndex = referenceArr[1] - 1;
 
-        console.log(quiz);
-        let newItem = quiz.exercises[exerciseIndex].exerciseItem[itemIndex];
-
+        let newItem = quiz.exercises[exerciseIndex].exerciseItems[itemIndex];
         displayNewItem(newItem, itemId);
 
+        console.log(quiz.exercises[exerciseIndex].box);
         if (quiz.exercises[exerciseIndex].box) {
             updateBox(quiz.exercises[exerciseIndex].box);
         }
@@ -185,15 +184,6 @@
             "<td style='font-size: smaller' id='dropdowntd" + itemId + "'>" +
             "<a onclick='configureDropdown(\"" + itemId + "\")'>change</a></td>";
     }
-
-    // /**
-    //  * (Re)shuffle translations box
-    //  */
-    // function shuffleTranslations() {
-    //     google.script.run
-    //         .withSuccessHandler(refreshBox)
-    //         .shuffleTranslations();
-    // }
 
     function updateBox(box) {
         document.getElementById('shuffledTranslations').innerHTML = box;

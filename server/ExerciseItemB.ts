@@ -2,13 +2,13 @@ class ExerciseItemTypeB extends ExerciseItem {
     // Type B: Pick a word from the box and translate.
 
     // override
-    protected setQuestion(idiom: Idiom) {
-        this.question = this.makeGapInSentence(idiom.Sentence, idiom.Word);
+    protected setQuestion() {
+        this.question = this.makeGapInSentence(this.sentence, this.word);
     }
 
     // override
-    protected setAnswer(idiom: Idiom) {
-        this.answer = idiom.Word;
+    protected setAnswer() {
+        this.answer = this.word;
     }
 
 }

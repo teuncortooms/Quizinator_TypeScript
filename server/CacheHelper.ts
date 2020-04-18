@@ -17,7 +17,6 @@ class CacheHelper {
             n++;
             temp = this.userProperties.getProperty(name + "_slice" + n);
         }
-        Logger.log(str);
         return str;
     }
 

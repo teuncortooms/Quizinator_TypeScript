@@ -60,9 +60,8 @@ class MainController {
         this.idiomsStore.ReplaceIdiom(oldIdiomId, newIdiomId);
         newIdiom = this.idiomsStore.GetIdiom(newIdiomId);
 
-        // Update quiz en get new item
+        // Update quiz item
         this.quiz.Exercises[exerciseIndex].ReplaceItem(itemIndex, newIdiom);
-        newItem = this.quiz.Exercises[exerciseIndex].ExerciseItems[itemIndex];
 
         // Save to cache
         this.save();

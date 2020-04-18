@@ -51,14 +51,11 @@
                                                                 <p id='shuffledTranslations'>
                                                                     <?= quiz.Exercises[i].Box ?>
                                                                 </p>
-                                                            </td>
-                                                            <td><a onclick='shuffleTranslations()'>Refresh</a>
-                                                            </td>
                                                         </tr>
                                                     </table>
-                                                </td>
-                                                <td id='showallanswers' style="width:60px;"><span style="font-weight: bold">Answers</span><br>
-                                                    <a style="font-size: smaller" onclick='showAllAnswers("<?= itemIdsString ?>")'>show</a> / <a style="font-size: smaller" onclick='hideAllAnswers("<?= itemIdsString ?>")'>hide</a></td>
+                                                    </td>
+                                                    <td id='showallanswers' style="width:60px;"><span style="font-weight: bold">Answers</span><br>
+                                                        <a style="font-size: smaller" onclick='showAllAnswers("<?= itemIdsString ?>")'>show</a> / <a style="font-size: smaller" onclick='hideAllAnswers("<?= itemIdsString ?>")'>hide</a></td>
                                             </tr>
                                             <? } ?>
 

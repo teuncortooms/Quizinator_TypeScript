@@ -1,26 +1,30 @@
-abstract class ExerciseItem {
+abstract class ExerciseItem extends Idiom {
     protected question: string;
     protected answer: string;
-    protected idiomId: number;
 
     get Question() { return this.question; }
     get Answer() { return this.answer; }
-    get IdiomId() { return this.idiomId; }
 
     public Init(idiom: Idiom) {
-        this.setQuestion(idiom);
-        this.setAnswer(idiom);
-        this.idiomId = idiom.Id;
+        this.idiomId = idiom.IdiomId;
+        this.word = idiom.Word;
+        this.sentence = idiom.Sentence;
+        this.translation = idiom.Translation;
+        this.setQuestion();
+        this.setAnswer();
     }
 
     public Load(json: any) {
+        this.idiomId = json.idiomId;
+        this.word = json.word;
+        this.sentence = json.sentence;
+        this.translation = json.translation;
         this.question = json.question;
         this.answer = json.answer;
-        this.idiomId = json.idiomId;
     }
 
-    protected abstract setQuestion(idiom: Idiom): void;
-    protected abstract setAnswer(idiom: any): void;
+    protected abstract setQuestion(): void;
+    protected abstract setAnswer(): void;
 
     protected makeGapInSentence(sentence: string, word: string) {
         let regEx = new RegExp(word, "ig");

@@ -7,7 +7,7 @@ class ExerciseTypeB extends Exercise {
         let type = 'B';
         let description = "Complete the sentences with words from the box. Translate the words into English.";
         this.initSuper(type, description, size, idioms);
-        this.box = this.fillBox(idioms);
+        this.box = this.fillBox();
     };
 
     public Load(json: any) {
@@ -15,10 +15,16 @@ class ExerciseTypeB extends Exercise {
         this.box = json.box;
     }
 
-    private fillBox(idioms: Idiom[]): string[][] {
+    public ReplaceItem(itemIndex: number, newIdiom: Idiom) {
+        let item = ExerciseItemFactory.Create(this.type, newIdiom);
+        this.exerciseItems[itemIndex] = item;
+        this.fillBox();
+    }
+
+    private fillBox(): string[][] {
         let translations: string[] = [];
-        for (let i = 0; i < idioms.length; i++) {
-            translations.push(idioms[i].Translation);
+        for (let i = 0; i < this.exerciseItems.length; i++) {
+            translations.push(this.exerciseItems[i].Translation);
         }
         // shuffle translations, turn into string, and put string in 
         // double array (needed for quizdoc)

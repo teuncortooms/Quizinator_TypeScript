@@ -41,8 +41,8 @@
         document.getElementById(showanswerid).removeAttribute("hidden");
     }
 
-    function showAllAnswers(itemIds) {
-        itemIds = JSON.parse(itemIds);
+    function showAllAnswers(itemIdsString) {
+        let itemIds = JSON.parse(itemIdsString);
         for (let i = 0; i < itemIds.length; i++) {
             showAnswer(itemIds[i]);
         }
@@ -83,22 +83,14 @@
      * Function to generate quiz
      */
     function handleFormSubmit(formObject) { // Sends input to function to handle input and UserProperties
-
-
-
         if ((document.getElementById('percentage_other').checked) && document.getElementById('other_percentage').value == "") {
             document.getElementById('other_percentage').style.backgroundColor = "lightpink";
             document.getElementById('other_percentage').style.borderColor = "red";
             return false;
         } else {
-            google.script.run.generateQuiz(formObject);
+            google.script.run.button_createDoc_click(formObject);
         }
-
-
-
-
     }
-
 
     /**
      * configureDropdown gets list of available words from idioms
@@ -112,11 +104,8 @@
     }
 
     function createDropdown(availableIdioms, itemId) {
-        //  let options = ['a', 'b', 'c', 'd'];
-        let sel, opt, i, elementExists;
-
         // remove any existing dropdown
-        elementExists = document.getElementById("dropdown");
+        let elementExists = document.getElementById("dropdown");
         if (document.getElementById("dropdown") != null) {
             let parent = document.getElementById("dropdown").parentNode;
             parent.removeChild(document.getElementById("dropdown"));
@@ -124,10 +113,9 @@
         };
 
         // create dropdown
-        sel = document.createElement("select");
+        let sel = document.createElement("select");
         sel.id = "dropdown";
         sel.name = "dropdown" + itemId;
-        //  sel.onchange = "replaceItem(" + itemId + " , 1, this.value)"; // DOESN'T WORK
         sel.setAttribute("onchange", "replaceItem('" + itemId + "', this.value)");
 
         // append dropdown and remove word "Change" behind this item
@@ -135,12 +123,12 @@
         document.getElementById("dropdowntd" + itemId).appendChild(sel);
 
         // populate dropdown with options
-        opt = document.createElement("option");
+        let opt = document.createElement("option");
         opt.text = "<select an item>";
         opt.value = itemId; // The first option cancels loading new data
         document.getElementById("dropdown").appendChild(opt);
 
-        for (i = 0; i < availableIdioms.length; i++) {
+        for (let i = 0; i < availableIdioms.length; i++) {
             opt = document.createElement("option");
             opt.text = availableIdioms[i].word;
             opt.value = availableIdioms[i].id;
@@ -161,7 +149,7 @@
         google.script.run
             .withSuccessHandler(loadNewItem)
             .withUserObject(itemId)
-            .dropDown_item_select(itemIndex, exerciseIndex, newIdiomId);
+            .dropDown_item_select(exerciseIndex, itemIndex, newIdiomId);
     }
 
 
@@ -173,10 +161,14 @@
         let itemtr = document.getElementById('itemtr' + itemId);
 
         itemtr.innerHTML = "" +
-            "<td><p id='item" + itemId + "'>" + itemNo + ". " + newItem.question + "</p></td>" +
-            "<td style='font-size: smaller' id='showanswer" + itemId + "'><a onclick='showAnswer(" + itemId + ")'>show</a></td>" +
-            "<td hidden=true style='font-size: smaller' id='answer" + itemId + "'>" + newItem.answer + " (<a onclick='hideAnswer(" + itemId + ")'>hide</a>)</td>" +
-            "<td style='font-size: smaller' id='dropdowntd" + itemId + "'><a onclick='configureDropdown(" + itemId + ")'>change</a></td>";
+            "<td><p id='item" + itemId + "'>" +
+            itemNo + ". " + newItem.question + "</p></td>" +
+            "<td style='font-size: smaller' id='showanswer" + itemId + "'>" +
+            "<a onclick='showAnswer(\"" + itemId + "\")'>show</a></td>" +
+            "<td hidden=true style='font-size: smaller' id='answer" + itemId + "'>" +
+            newItem.answer + " (<a onclick='hideAnswer(\"" + itemId + "\")'>hide</a>)</td>" +
+            "<td style='font-size: smaller' id='dropdowntd" + itemId + "'>" +
+            "<a onclick='configureDropdown(\"" + itemId + "\")'>change</a></td>";
     }
 
 

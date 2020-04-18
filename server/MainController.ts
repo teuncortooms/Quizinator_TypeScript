@@ -4,9 +4,10 @@ class MainController {
     private idiomsStore: IdiomsStore;
     private quiz: Quiz;
     private preview: Preview;
+    private quizDocs: QuizDocs;
 
     get IdiomsStore() { return this.idiomsStore };
-    
+
     public getUnitsFromSpreadsheet() {
         this.setSpreadsheet();
         return this.spreadsheet.Units;
@@ -40,8 +41,6 @@ class MainController {
         dataString = CacheHelper.Load('quiz');
         this.quiz = new Quiz();
         this.quiz.Load(dataString);
-
-        Logger.log(this.quiz);
     }
 
     public previewQuiz() {
@@ -64,13 +63,16 @@ class MainController {
         this.quiz.Exercises[exerciseIndex].ReplaceItem(itemIndex, newIdiom);
         newItem = this.quiz.Exercises[exerciseIndex].ExerciseItems[itemIndex];
 
-        Logger.log(this.quiz);
-        
         // Save to cache
         this.save();
 
         // Return new item to be processed in preview
         return newItem;
+    }
+
+    public CreateQuizDocs(formObject: any) {
+        this.quizDocs = new QuizDocs(formObject);
+        this.quizDocs.Generate(this.quiz);
     }
 
     private setSpreadsheet() {

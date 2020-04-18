@@ -4,9 +4,10 @@ abstract class Exercise {
     protected description: string;
     protected exerciseItems: ExerciseItem[];
 
-    get Type() { return this.type };
-    get Description() { return this.description };
-    get ExerciseItems() { return this.exerciseItems };
+    get Type(): string { return this.type };
+    get Description(): string { return this.description };
+    get ExerciseItems(): ExerciseItem[] { return this.exerciseItems };
+    get Box(): string[][] { return null };
 
     public abstract Init(size: number, idioms: Idiom[]): void;
 

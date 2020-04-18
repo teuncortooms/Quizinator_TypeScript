@@ -10,6 +10,11 @@ class ExerciseTypeB extends Exercise {
         this.box = this.fillBox(idioms);
     };
 
+    public Load(json: any) {
+        super.Load(json);
+        this.box = json.box;
+    }
+
     private fillBox(idioms: Idiom[]): string[][] {
         let translations: string[] = [];
         for (let i = 0; i < idioms.length; i++) {

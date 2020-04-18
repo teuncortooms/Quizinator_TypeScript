@@ -40,9 +40,9 @@ abstract class ExerciseItem {
         wordIndex = sentence.toLowerCase().indexOf(word.toLowerCase());
         underlinedSentence = [
             sentence.slice(0, wordIndex),
-            "__",
+            "<u>",
             sentence.slice(wordIndex, wordIndex + word.length),
-            "__",
+            "</u>",
             sentence.slice(wordIndex + word.length)
         ].join('');
 

@@ -33,11 +33,11 @@
                                                 <? let itemId = "Ex" + (i+1) + "_item" + (k+1); ?>
                                                     <? itemIds.push(itemId); ?>
                                                         <? } ?>
-                                                            <? let itemIdsJson = JSON.stringify(itemIds); ?>
+                                                            <? let itemIdsString = JSON.stringify(itemIds); ?>
 
                                                                 <? if (quiz.Exercises[i].Type != 'B') { ?>
                                                                     <td id='showallanswers' style="width:60px;"><span style="font-weight: bold">Answers</span><br>
-                                                                        <a style="font-size: smaller" onclick='showAllAnswers("<?= itemIdsJson ?>")'>show</a> / <a style="font-size: smaller" onclick='hideAllAnswers("<?= itemIdsJson ?>")'>hide</a></td>
+                                                                        <a style="font-size: smaller" onclick='showAllAnswers("<?= itemIdsString ?>")'>show</a> / <a style="font-size: smaller" onclick='hideAllAnswers("<?= itemIdsString ?>")'>hide</a></td>
                                     </tr>
                                     <? } ?>
 
@@ -58,7 +58,7 @@
                                                     </table>
                                                 </td>
                                                 <td id='showallanswers' style="width:60px;"><span style="font-weight: bold">Answers</span><br>
-                                                    <a style="font-size: smaller" onclick='showAllAnswers("<?= itemIdsJson ?>")'>show</a> / <a style="font-size: smaller" onclick='hideAllAnswers("<?= itemIdsJson ?>")'>hide</a></td>
+                                                    <a style="font-size: smaller" onclick='showAllAnswers("<?= itemIdsString ?>")'>show</a> / <a style="font-size: smaller" onclick='hideAllAnswers("<?= itemIdsString ?>")'>hide</a></td>
                                             </tr>
                                             <? } ?>
 

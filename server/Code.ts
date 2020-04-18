@@ -38,3 +38,9 @@ function dropDown_item_select(exerciseIndex: number, itemIndex: number, idiomId:
   mainController.Load();
   return mainController.ReplaceItem(exerciseIndex, itemIndex, idiomId);
 }
+
+function button_createDoc_click(formObject: any) {
+  let mainController = new MainController;
+  mainController.Load();
+  mainController.CreateQuizDocs(formObject);
+}

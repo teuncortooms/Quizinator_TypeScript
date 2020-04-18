@@ -36,7 +36,8 @@ function button_changeItem_click() {
 function dropDown_item_select(exerciseIndex: number, itemIndex: number, idiomId: number) {
   let mainController = new MainController;
   mainController.Load();
-  return mainController.ReplaceItem(exerciseIndex, itemIndex, idiomId);
+  mainController.ReplaceItem(exerciseIndex, itemIndex, idiomId);
+  return mainController.Quiz;
 }
 
 function button_createDoc_click(formObject: any) {

@@ -7,6 +7,7 @@ class MainController {
     private quizDocs: QuizDocs;
 
     get IdiomsStore() { return this.idiomsStore };
+    get Quiz() { return this.quiz };
 
     public getUnitsFromSpreadsheet() {
         this.setSpreadsheet();
@@ -48,7 +49,7 @@ class MainController {
         this.preview.Show(this.quiz);
     }
 
-    public ReplaceItem(exerciseIndex: number, itemIndex: number, newIdiomId: number): ExerciseItem {
+    public ReplaceItem(exerciseIndex: number, itemIndex: number, newIdiomId: number) {
         let oldIdiomId: number;
         let newIdiom: Idiom;
         let newItem: ExerciseItem;
@@ -65,9 +66,6 @@ class MainController {
 
         // Save to cache
         this.save();
-
-        // Return new item to be processed in preview
-        return newItem;
     }
 
     public CreateQuizDocs(formObject: any) {

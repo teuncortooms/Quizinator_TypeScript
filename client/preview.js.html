@@ -139,7 +139,7 @@
 
     /**
      * Calls function on server to replace an idiom item
-     * loadNewItem loads the new item
+     * and then displays the new item in the preview
      */
     function replaceItem(itemId, newIdiomId) {
         let referenceArr = itemId.split("Ex")[1].split("_item");
@@ -147,17 +147,32 @@
         let itemIndex = referenceArr[1] - 1;
 
         google.script.run
-            .withSuccessHandler(loadNewItem)
+            .withSuccessHandler(updatePreview)
             .withUserObject(itemId)
             .dropDown_item_select(exerciseIndex, itemIndex, newIdiomId);
     }
 
 
-    function loadNewItem(newItem, itemId) {
+    function updatePreview(quiz, itemId) {
+        let referenceArr = itemId.split("Ex")[1].split("_item");
+        let exerciseIndex = referenceArr[0] - 1;
+        let itemIndex = referenceArr[1] - 1;
+
+        console.log(quiz);
+        let newItem = quiz.exercises[exerciseIndex].exerciseItem[itemIndex];
+
+        displayNewItem(newItem, itemId);
+
+        if (quiz.exercises[exerciseIndex].box) {
+            updateBox(quiz.exercises[exerciseIndex].box);
+        }
+
+    }
+
+    function displayNewItem(newItem, itemId) {
         let referenceArr = itemId.split("Ex")[1].split("_item");
         let itemNo = referenceArr[1];
 
-        // insert new item
         let itemtr = document.getElementById('itemtr' + itemId);
 
         itemtr.innerHTML = "" +
@@ -171,18 +186,16 @@
             "<a onclick='configureDropdown(\"" + itemId + "\")'>change</a></td>";
     }
 
+    // /**
+    //  * (Re)shuffle translations box
+    //  */
+    // function shuffleTranslations() {
+    //     google.script.run
+    //         .withSuccessHandler(refreshBox)
+    //         .shuffleTranslations();
+    // }
 
-    /**
-     * (Re)shuffle translations box
-     */
-    function shuffleTranslations() {
-        google.script.run
-            .withSuccessHandler(refreshBox)
-            .shuffleTranslations();
-    }
-
-    function refreshBox(shuffledTranslations) {
-        document.getElementById('shuffledTranslations').style.color = "black";
-        document.getElementById('shuffledTranslations').innerHTML = shuffledTranslations;
+    function updateBox(box) {
+        document.getElementById('shuffledTranslations').innerHTML = box;
     }
 </script>

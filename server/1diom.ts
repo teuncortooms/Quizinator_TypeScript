@@ -1,10 +1,12 @@
-class Idiom {
-    private id: number;
-    private word: string;
-    private sentence: string;
-    private translation: string;
+// filename prefixed with '1' because this needs to load before class ExerciseItem. Better solution?
 
-    get Id(): number { return this.id; }
+class Idiom {
+    protected idiomId: number;
+    protected word: string;
+    protected sentence: string;
+    protected translation: string;
+
+    get IdiomId(): number { return this.idiomId; }
     get Word(): string { return this.word; }
     get Sentence(): string { return this.sentence; }
     get Translation(): string { return this.translation; }
@@ -17,14 +19,14 @@ class Idiom {
         this.word = this.stripWord(rowData[wordCol]);
         this.sentence = rowData[sentenceCol];
         this.translation = rowData[translationCol];
-        this.id = id;
+        this.idiomId = id;
     }
 
     public Load(json: any) {
         this.word = json.word;
         this.sentence = json.sentence;
         this.translation = json.translation;
-        this.id = json.id;
+        this.idiomId = json.idiomId;
     }
 
     protected stripWord(word: string) {

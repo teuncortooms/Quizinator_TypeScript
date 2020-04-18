@@ -49,14 +49,14 @@ class IdiomsStore {
 
         // find newId in idioms
         for (let i = 0; i < this.idioms.length && newIndex == null; i++) {
-            if (this.idioms[i].Id == newId) {
+            if (this.idioms[i].IdiomId == newId) {
                 newIndex = i;
             }
         }
         // find oldId in selectedIndices
         for (let i = 0; i < this.selectedIndices.length && selectedIndicesIndex == null; i++) {
             let selectedIndex = this.selectedIndices[i];
-            if (this.idioms[selectedIndex].Id == oldId) {
+            if (this.idioms[selectedIndex].IdiomId == oldId) {
                 selectedIndicesIndex = i;
             }
         }
@@ -67,7 +67,7 @@ class IdiomsStore {
     public GetIdiom(id: number): Idiom {
         let requestedIdiom: Idiom;
         for (let idiom of this.idioms) {
-            if (idiom.Id == id) {
+            if (idiom.IdiomId == id) {
                 requestedIdiom = idiom;
             }
         }

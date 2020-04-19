@@ -43,14 +43,6 @@ function generateQuizForm() {
     }     
   }
 
-
-  // success message
-  successMessage = HtmlService.createHtmlOutput(''
-    + 'Quiz Form successfully created. Click the link.<br><br>'
-    + 'Your quiz: <a target=_new href="'+quizForm.getPublishedUrl()+'">'+formName+'</a>');
-  SpreadsheetApp.getUi().showModalDialog(successMessage, 'Success');
-  
-  return "success";
 }
 
 

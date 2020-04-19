@@ -5,6 +5,7 @@ class MainController {
     private quiz: Quiz;
     private preview: Preview;
     private quizDocs: QuizDocs;
+    private quizForm: QuizForm;
 
     get IdiomsStore() { return this.idiomsStore };
     get Quiz() { return this.quiz };
@@ -70,6 +71,11 @@ class MainController {
     public CreateQuizDocs(formObject: any) {
         this.quizDocs = new QuizDocs(formObject);
         this.quizDocs.Generate(this.quiz);
+    }
+
+    public CreateQuizForm(formObject: any) {
+        this.quizForm = new QuizForm();
+        this.quizForm.Generate(this.quiz);
     }
 
     private setSpreadsheet() {

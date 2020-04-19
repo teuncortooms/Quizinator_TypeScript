@@ -17,10 +17,10 @@
     /**
      * When button is clicked
      */
-    function clickAction() {
+    function createForm() {
         let span = document.getElementById('nb');
         span.innerHTML = "  <img class='center-cropped' src='https://i.stack.imgur.com/h6viz.gif'> Can take a long time. Don't click again.";
-        google.script.run.generateQuizForm();
+        google.script.run.button_createForm_click();
     }
 
 
@@ -62,7 +62,7 @@
     function showAdvanced() {
         document.getElementById("advanced").innerHTML = "" +
             "<a onclick='hideAdvanced()' style='font-size:x-small;'>Hide advanced options</a><br><br>" +
-            "<button id='buttonGenerateForm' class='create' type='button' onclick='clickAction()'>Create Google Form (beta)</button>" +
+            "<button id='buttonGenerateForm' class='create' type='button' onclick='createForm()'>Create Google Form (beta)</button>" +
             "<span id='nb' style='font-size:x-small; color:red'>  Note: Answer key will not be imported into form. (Not available yet.)</span>";
     }
 

@@ -45,3 +45,9 @@ function button_createDoc_click(formObject: any) {
   mainController.Load();
   mainController.CreateQuizDocs(formObject);
 }
+
+function button_createForm_click(formObject: any) {
+  let mainController = new MainController;
+  mainController.Load();
+  mainController.CreateQuizForm(formObject);
+}

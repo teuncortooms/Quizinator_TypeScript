@@ -10,11 +10,12 @@ class QuizForm {
         this.openSuccessDialog();
     }
 
-    private createForm(quiz: Quiz){
+    private createForm(quiz: Quiz) {
         let name = quiz.Title;
         let form = FormApp.create(name);
 
-        form.setTitle(name).setDescription("Good luck!").setIsQuiz(true).setRequireLogin(true).setCollectEmail(true);
+        form.setTitle(name).setDescription("Good luck!").setIsQuiz(true)
+            .setLimitOneResponsePerUser(true).setCollectEmail(true);
 
         // for every exercise
         for (let i = 0; i < quiz.Exercises.length - 1; i++) {
@@ -44,7 +45,7 @@ class QuizForm {
         let successMessage = HtmlService.createHtmlOutput(''
             + 'Quiz Form successfully created. Click the link.<br><br>'
             + 'Your quiz: <a target=_new href="' + this.form.getPublishedUrl() + '">'
-            + this.form.getName() + '</a>');
+            + this.form.getTitle() + '</a>');
         SpreadsheetApp.getUi().showModalDialog(successMessage, 'Success');
     }
 }

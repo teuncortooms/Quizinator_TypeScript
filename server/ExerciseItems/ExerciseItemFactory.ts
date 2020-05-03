@@ -6,13 +6,13 @@ class ExerciseItemFactory {
         return exerciseItem;
     }
 
-    public static CreateFromCache(json: any, type: string) : ExerciseItem {
+    public static CreateFromCache(json: any, type: string): ExerciseItem {
         let exerciseItem: ExerciseItem = this.pick(type);
         exerciseItem.Load(json);
         return exerciseItem;
     }
 
-    private static pick(type: string){
+    private static pick(type: string) {
         let exerciseItem: ExerciseItem;
         if (type == 'A') {
             exerciseItem = new ExerciseItemTypeA();
@@ -22,6 +22,12 @@ class ExerciseItemFactory {
         }
         else if (type == 'C') {
             exerciseItem = new ExerciseItemTypeC();
+        }
+        else if (type == 'D') {
+            exerciseItem = new ExerciseItemTypeD();
+        }
+        else if (type == 'E') {
+            exerciseItem = new ExerciseItemTypeE();
         }
         else {
             throw "Unknown item type: " + type;

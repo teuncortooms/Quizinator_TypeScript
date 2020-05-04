@@ -1,12 +1,12 @@
-function onOpen() {
+function onOpen(e: any) {
   // Add a custom menu
   SpreadsheetApp.getUi().createAddonMenu()
     .addItem('Open Sidebar', 'menuItem_openSidebar_click')
     .addToUi();
 }
 
-function onInstall() {
-  onOpen();
+function onInstall(e: any) {
+  onOpen(e);
 }
 
 function menuItem_openSidebar_click() {

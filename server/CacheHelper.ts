@@ -1,13 +1,13 @@
 class CacheHelper {
-    private static userProperties = PropertiesService.getUserProperties();
-    private static maxProperties = 50;  // properties total storage is set to 500kB/store
-    private static propertySize = 5000; // property limit is set to 9kB/val
+    private userProperties = PropertiesService.getUserProperties();
+    private maxProperties = 50;  // properties total storage is set to 500kB/store
+    private propertySize = 5000; // property limit is set to 9kB/val
 
-    public static Clear() {
+    public Clear() {
         this.userProperties.deleteAllProperties();
     }
 
-    public static Load(name: string): string {
+    public Load(name: string): string {
         let str: string = "";
 
         let n = 1;
@@ -20,7 +20,7 @@ class CacheHelper {
         return str;
     }
 
-    public static Save(name: string, value: any) {
+    public Save(name: string, value: any) {
         let str = JSON.stringify(value);
 
         // value is first split into chunks to prevent cache error

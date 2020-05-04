@@ -36,11 +36,12 @@ class MainController {
     }
 
     public Load() {
-        let dataString = CacheHelper.Load('idiomsStore');
+        let cachehelper: CacheHelper = new CacheHelper;
+        let dataString = cachehelper.Load('idiomsStore');
         this.idiomsStore = new IdiomsStore();
         this.idiomsStore.Load(dataString);
 
-        dataString = CacheHelper.Load('quiz');
+        dataString = cachehelper.Load('quiz');
         this.quiz = new Quiz();
         this.quiz.Load(dataString);
     }
@@ -86,8 +87,9 @@ class MainController {
 
     private save() {
         // Save to cache
-        CacheHelper.Clear();
-        CacheHelper.Save('idiomsStore', this.idiomsStore);
-        CacheHelper.Save('quiz', this.quiz);
+        let cachehelper: CacheHelper = new CacheHelper;
+        cachehelper.Clear();
+        cachehelper.Save('idiomsStore', this.idiomsStore);
+        cachehelper.Save('quiz', this.quiz);
     }
 }

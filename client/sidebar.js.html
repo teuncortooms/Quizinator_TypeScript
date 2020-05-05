@@ -49,6 +49,12 @@
             .sidebar_loadUnits();
     }
 
+    function createExample() {
+        google.script.run
+            .withSuccessHandler(buildForm)
+            .button_createExample_click();
+    }
+
     function buildForm(units) {
         let option;
         let i;
@@ -57,7 +63,8 @@
 
         html = "" +
             "<br>" +
-            "<button id='buttonUnits' type='button' onclick='loadForm()'>Click here to reload the form</button><br>" +
+            "<button id='buttonUnits' type='button' onclick='loadForm()'>Reload units</button>" +
+            "<button id='buttonExample' type='button' onclick='createExample()'>Example Sheet</button><br>" +
             "<br>" +
             "<b>Choose Unit(s):</b><br>" +
             "<select size='5' id='units' name='inputUnits' style='width:250px' required multiple>" +
@@ -99,9 +106,8 @@
             "How many items?  <input name='inputItemsPerExArr' type='number' value=10 style='width:45px' required /><br><br>" +
             "" +
             "" +
-            "<input id='submit' class='action' type='submit' value='Preview Quiz' /><br>" +
-            "<br>" +
-            "<div id='msg' style='font-style:italic; font-size:small; color:red'></div>" +
+            "<input id='submit' class='action' type='submit' value='Preview Quiz' />" +
+            "<span id='msg' style='font-style:italic; font-size:small; color:black; margin-left:30px;'></span>" +
             "";
 
 
@@ -145,19 +151,24 @@
      * Handle form submit
      */
     function handleFormSubmit(formObject) { // Send input to function
-        let form = document.getElementById('quizInput');
-
-        // reset status message and error colours
-        document.getElementById('msg').innerHTML = "";
-        document.getElementById('units').style.backgroundColor = '';
-
-        // msg Creating quiz... (alternative: document.getElementById('submit').value = 'Creating quiz...';)
+        document.getElementById('submit').disabled = true;
         document.getElementById('msg').innerHTML = "Creating quiz...";
-
         google.script.run
-            .withFailureHandler(document.getElementById('msg').innerHTML = "Failed")
-            .withSuccessHandler(document.getElementById('msg').innerHTML = "")
-            .button_previewQuiz_click(formObject); // if validated, send to server function
+            .withFailureHandler(onFailure)
+            .withSuccessHandler(onSuccess)
+            .button_previewQuiz_click(formObject);
+    }
+
+    function onFailure(error) {
+        document.getElementById('submit').disabled = false;
+        document.getElementById('msg').innerHTML =
+            "ERROR: " + error.message + ". Please try again.";
+    }
+
+    function onSuccess() {
+        document.getElementById('submit').disabled = false;
+        document.getElementById('msg').innerHTML =
+            "Success";
     }
 
     window.addEventListener('load', loadForm);

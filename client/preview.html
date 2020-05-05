@@ -81,7 +81,7 @@
                             </table>
                         </div>
 
-                        <form id='quizPreview' onsubmit='return handleFormSubmit(this);'>
+                        <form id='quizPreview' onsubmit='handleFormSubmit(this); return false'>
                             <div id='norm' style='font-size:small;'>
                                 <p style='border:1px solid lightgrey; border-radius:5px; padding:5px'>
                                     <span>Choose a norm: </span>
@@ -91,7 +91,8 @@
                                     <span style='font-size:medium; font-weight: bold;'> = 6</span>
                                 </p>
                             </div>
-                            <input id='buttonGenerate' class='action' type='submit' value='CREATE GOOGLE DOCS' /><br>
+                            <button id='buttonGenerate' class='action' type='submit'>CREATE GOOGLE DOCS</button><br>
+                            <span id='msg' style='font-size:x-small; color:red' hidden></span>
                             <div id='advanced'>
                                 <a onclick='showAdvanced()' style='font-size:x-small;'>Show advanced options</a>
                             </div>

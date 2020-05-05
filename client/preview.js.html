@@ -13,16 +13,47 @@
         }
     }
 
-
     /**
-     * When button is clicked
+     * When Create Docs is clicked
      */
-    function createForm() {
-        let span = document.getElementById('nb');
-        span.innerHTML = "  <img class='center-cropped' src='https://i.stack.imgur.com/h6viz.gif'> Can take a long time. Don't click again.";
-        google.script.run.button_createForm_click();
+    function handleFormSubmit(formObject) {
+        if ((document.getElementById('percentage_other').checked) && document.getElementById('other_percentage').value == "") {
+            document.getElementById('other_percentage').style.backgroundColor = "lightpink";
+            document.getElementById('other_percentage').style.borderColor = "red";
+            return false;
+        } else {
+            document.getElementById('buttonGenerate').disabled = true;
+            google.script.run
+                .withFailureHandler(onFailureToGenerate)
+                .button_createDoc_click(formObject);
+        }
+
+        function onFailureToGenerate(error) {
+            document.getElementById('buttonGenerate').disabled = false;
+            document.getElementById("msg").hidden = false;
+            document.getElementById("msg").innerHTML =
+                "ERROR: " + error.message + ". Please try again."
+        }
     }
 
+    /**
+     * When Create Form is clicked
+     */
+    function createForm() {
+        document.getElementById('buttonGenerateForm').disabled = true;
+        document.getElementById('nb').innerHTML =
+            "  <img class='center-cropped' src='https://i.stack.imgur.com/h6viz.gif'> " +
+            " Can take a long time. Don't click again.";
+        google.script.run
+            .withFailureHandler(onFailure)
+            .button_createForm_click();
+    }
+
+    function onFailure(error) {
+        document.getElementById('buttonGenerateForm').disabled = false;
+        document.getElementById('nb').innerHTML =
+            "ERROR: " + error.message + ". Please try again."
+    }
 
     /**
      * Functions to show and hide answers
@@ -77,19 +108,6 @@
      */
     function selectOther() {
         document.getElementById("percentage_other").checked = true;
-    }
-
-    /**
-     * Function to generate quiz
-     */
-    function handleFormSubmit(formObject) { // Sends input to function to handle input and UserProperties
-        if ((document.getElementById('percentage_other').checked) && document.getElementById('other_percentage').value == "") {
-            document.getElementById('other_percentage').style.backgroundColor = "lightpink";
-            document.getElementById('other_percentage').style.borderColor = "red";
-            return false;
-        } else {
-            google.script.run.button_createDoc_click(formObject);
-        }
     }
 
     /**

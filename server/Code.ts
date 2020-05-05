@@ -12,12 +12,18 @@ function onInstall(e: any) {
 function menuItem_openSidebar_click() {
   let html = HtmlService.createTemplateFromFile('client/sidebar').evaluate()
     .setSandboxMode(HtmlService.SandboxMode.IFRAME)
-    .setTitle("Cot's Quizinator");
+    .setTitle("Quizinator for Google Sheets");
   SpreadsheetApp.getUi().showSidebar(html);
 }
 
 function sidebar_loadUnits() {
   let mainController = new MainController;
+  return mainController.getUnitsFromSpreadsheet();
+}
+
+function button_createExample_click() {
+  let mainController = new MainController;
+  mainController.createExampleSheet();
   return mainController.getUnitsFromSpreadsheet();
 }
 
@@ -46,8 +52,8 @@ function button_createDoc_click(formObject: any) {
   mainController.CreateQuizDocs(formObject);
 }
 
-function button_createForm_click(formObject: any) {
+function button_createForm_click() {
   let mainController = new MainController;
   mainController.Load();
-  mainController.CreateQuizForm(formObject);
+  mainController.CreateQuizForm();
 }

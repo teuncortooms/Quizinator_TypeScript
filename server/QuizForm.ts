@@ -32,8 +32,15 @@ class QuizForm {
             let items = quiz.Exercises[i].ExerciseItems;
             for (let j = 0; j < items.length; j++) {
                 let item = form.addTextItem();
-                item.setPoints(1).setRequired(true).setTitle(items[j].Question);
-                if (quiz.Exercises[i].Type == 'A') {
+                if (quiz.Exercises[i].Type != 'A') {
+                    item.setPoints(1).setRequired(true).setTitle(items[j].Question);
+                }
+                else {
+                    // remove <u> and </u>
+                    let question = items[j].Question;
+                    let findMe = "<u>(.*?)<\/u>";
+                    let questionNew = question.replace(findMe, "");  // NOT WORKING
+                    item.setPoints(1).setRequired(true).setTitle(questionNew);
                     item.setHelpText("(" + items[j].Word + ")");
                 }
             }

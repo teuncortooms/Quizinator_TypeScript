@@ -15,6 +15,11 @@ class MainController {
         return this.spreadsheet.Units;
     }
 
+    public createExampleSheet() {
+        this.setSpreadsheet();
+        this.spreadsheet.addExampleSheet();
+    }
+
     public Init(formObject: any) {
         // Handle input and pick idioms
         this.setSpreadsheet();
@@ -74,7 +79,7 @@ class MainController {
         this.quizDocs.Generate(this.quiz);
     }
 
-    public CreateQuizForm(formObject: any) {
+    public CreateQuizForm() {
         this.quizForm = new QuizForm();
         this.quizForm.Generate(this.quiz);
     }

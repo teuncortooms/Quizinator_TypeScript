@@ -75,16 +75,17 @@ class IdiomsStore {
     }
 
     private findIdioms(units: any, spreadsheet: Spreadsheet): Idiom[] {
+        let data = spreadsheet.Data;
         let unitCol = 3;
         let idioms: Idiom[] = [];
         // for every selected unit
         for (let i = 0; i < units.length; i++) {
             // check every row in sheetdata
-            for (let row in spreadsheet.Data) {
+            for (let row in data) {
                 // if unit matches
-                if (spreadsheet.Data[row][unitCol] == units[i]) {
+                if (data[row][unitCol] == units[i]) {
                     // make new idiom
-                    let rowData = spreadsheet.Data[row];
+                    let rowData = data[row];
                     let idiom = new Idiom();
                     idiom.Init(row, rowData);
                     // add to idioms

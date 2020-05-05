@@ -1,0 +1,1 @@
+The addon uses ../auth/spreadsheets to read idioms data from a spreadsheet and ../auth/documents and ../auth/forms to make and fill documents and forms with quizzes, based on the data and user input. 

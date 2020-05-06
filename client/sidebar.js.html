@@ -1,4 +1,10 @@
 <script>
+    window.addEventListener('load', loadUnits);
+    window.addEventListener('load', setDefaultTitle);
+    window.addEventListener('load', loadTypes);
+
+
+
     /**
      * Use this for logging
      */
@@ -15,18 +21,92 @@
 
 
     /**
-     * Return a formatted date (for use in sidebar)
+     * Functions to load form
      */
-
-    // Helper function
-    function addZero(i) {
-        if (i < 10) {
-            i = "0" + i;
-        }
-        return i;
+    function loadUnits() {
+        google.script.run
+            .withSuccessHandler(addUnits)
+            .sidebar_loadUnits();
     }
 
-    // Return a formatted date
+    function loadTypes() {
+        google.script.run
+            .withSuccessHandler(addExercises)
+            .sidebar_loadTypes();
+    }
+
+    function createExample() {
+        google.script.run
+            .withSuccessHandler(buildForm)
+            .button_createExample_click();
+    }
+
+    function addUnits(units) {
+        for (let i = 0; i < units.length; i++) {
+            let option = document.createElement("OPTION");
+            let unitno = String(units[i]).match(/\d+/)[0];
+
+            option.setAttribute("id", units[i]);
+            option.setAttribute("value", units[i]);
+            option.setAttribute("label", units[i]);
+            option.setAttribute("style", "text-align:left");
+            option.setAttribute("onclick", "document.getElementById('inputName').value='Quiz Unit " + unitno + " version " + getDateAndTime() + "'");
+
+            document.getElementById("units").appendChild(option);
+        }
+    }
+
+    function addExercises(descriptions) {
+        let numberOfExercises = 3;
+
+        for (let i = 0; i < numberOfExercises; i++) {
+            let id = `exercise${i + 1}`;
+            let div = document.createElement("DIV");
+            let selectLabel = document.createElement("LABEL");
+            let select = document.createElement("SELECT");
+            let howManyLabel = document.createElement("LABEL");
+            let howMany = document.createElement("INPUT");
+
+            div.setAttribute("class", "exercise")
+            selectLabel.setAttribute("for", id);
+            selectLabel.innerHTML = `<b>Exercise ${i + 1}</b>`;
+
+            select.setAttribute("id", id);
+            select.setAttribute("name", "inputExTypeArr");
+            select.setAttribute("style", "width:250px");
+            select.required = true;
+            for (let type in descriptions) {
+                let option = document.createElement("OPTION");
+                option.setAttribute("value", type);
+                option.innerHTML = `Type ${type}: ${descriptions[type]}`;
+                select.appendChild(option);
+            }
+            if (select.childNodes[i]) { // default type A for ex 1, B for 2 etc.
+                select.childNodes[i].selected = true;
+            }
+
+            howManyLabel.innerHTML = "How many items? ";
+
+            howMany.setAttribute("name", "inputItemsPerExArr");
+            howMany.setAttribute("type", "number");
+            howMany.setAttribute("value", [5, 8, 10][i] || 5); // default sizes
+            howMany.setAttribute("style", "width:45px");
+            howMany.required = true;
+
+            div.appendChild(selectLabel);
+            div.appendChild(select);
+            div.appendChild(howManyLabel);
+            div.appendChild(howMany);
+            document.getElementById("exercises").appendChild(div);
+        }
+        document.getElementById("loading").remove();
+    }
+
+    function setDefaultTitle() {
+        document.getElementById("inputName").value = 'Quiz version ' + getDateAndTime();
+    }
+
+    // Returns a formatted date
     function getDateAndTime() {
         let d = new Date();
         let year = String(d.getFullYear());
@@ -39,118 +119,18 @@
         return fullDateAndTime;
     }
 
-
-    /**
-     * Functions to load form
-     */
-    function loadForm() {
-        google.script.run
-            .withSuccessHandler(buildForm)
-            .sidebar_loadUnits();
-    }
-
-    function createExample() {
-        google.script.run
-            .withSuccessHandler(buildForm)
-            .button_createExample_click();
-    }
-
-    function buildForm(units) {
-        let option;
-        let i;
-        let unitno;
-        let html;
-
-        html = "" +
-            "<br>" +
-            "<button id='buttonUnits' type='button' onclick='loadForm()'>Reload units</button>" +
-            "<button id='buttonExample' type='button' onclick='createExample()'>Example Sheet</button><br>" +
-            "<br>" +
-            "<b>Choose Unit(s):</b><br>" +
-            "<select size='5' id='units' name='inputUnits' style='width:250px' required multiple>" +
-            "</select><br>" +
-            "<br>" +
-            "" +
-            "<b>Title</b><br>" +
-            "<input id='inputName' name='inputName' type='text' value='Title' size='35' style='width:250px' required /><br>" +
-            "<br>" +
-            "" +
-            "<b>Exercise 1</b><br>" +
-            "<select name='inputExTypeArr' style='width:250px' required>" +
-            "  <option value='A' selected>Type A: Translate the underlined words into Dutch.</option>" +
-            "  <option value='B'>Type B: Complete the sentences with words from the box and translate into English.</option>" +
-            "  <option value='C'>Type C: Complete the sentences with the translation of the Dutch words.</option>" +
-            "  <option value='D'>Type D: Translate the words into Dutch.</option>" +
-            "  <option value='E'>Type E: Translate the words into English.</option>" +
-            "</select><br>" +
-            "How many items?  <input name='inputItemsPerExArr' type='number' value=5 style='width:45px' required /><br><br>" +
-            "" +
-            "<b>Exercise 2</b><br>" +
-            "<select name='inputExTypeArr' style='width:250px' required>" +
-            "  <option value='A'>Type A: Translate the underlined words into Dutch.</option>" +
-            "  <option value='B' selected>Type B: Complete the sentences with words from the box and translate into English.</option>" +
-            "  <option value='C'>Type C: Complete the sentences with the translation of the Dutch words.</option>" +
-            "  <option value='D'>Type D: Translate the words into Dutch.</option>" +
-            "  <option value='E'>Type E: Translate the words into English.</option>" +
-            "</select><br>" +
-            "How many items?  <input name='inputItemsPerExArr' type='number' value=8 style='width:45px' required /><br><br>" +
-            "" +
-            "<b>Exercise 3</b><br>" +
-            "<select name='inputExTypeArr' style='width:250px' required>" +
-            "  <option value='A'>Type A: Translate the underlined words into Dutch.</option>" +
-            "  <option value='B'>Type B: Complete the sentences with words from the box and translate into English.</option>" +
-            "  <option value='C' selected>Type C: Complete the sentences with the translation of the Dutch words.</option>" +
-            "  <option value='D'>Type D: Translate the words into Dutch.</option>" +
-            "  <option value='E'>Type E: Translate the words into English.</option>" +
-            "</select><br>" +
-            "How many items?  <input name='inputItemsPerExArr' type='number' value=10 style='width:45px' required /><br><br>" +
-            "" +
-            "" +
-            "<input id='submit' class='action' type='submit' value='Preview Quiz' />" +
-            "<span id='msg' style='font-style:italic; font-size:small; color:black; margin-left:30px;'></span>" +
-            "";
-
-
-        document.getElementById("quizInput").innerHTML = html;
-
-        for (i = 0; i < units.length; i++) {
-            option = document.createElement("OPTION");
-            unitno = String(units[i]).match(/\d+/)[0];
-
-            option.setAttribute("id", units[i]);
-            option.setAttribute("value", units[i]);
-            option.setAttribute("label", units[i]);
-            option.setAttribute("style", "text-align:left");
-            option.setAttribute("onclick", "document.getElementById('inputName').value='SO Unit " + unitno + " versie " + getDateAndTime() + "'");
-
-            document.getElementById("units").appendChild(option);
+    // Helper function
+    function addZero(i) {
+        if (i < 10) {
+            i = "0" + i;
         }
-
-        setDefaults();
-        preventFormSubmit();
+        return i;
     }
-
-    // helper function: prevents the form elements from submitting before the onclick handler can finish
-    // (without it, when a form element has no action attribute specified, it will submit to a blank page)
-    function preventFormSubmit() {
-        let forms = document.querySelectorAll('form');
-        for (let i = 0; i < forms.length; i++) {
-            forms[i].addEventListener('submit', function(event) {
-                event.preventDefault();
-            });
-        }
-    }
-
-    // helper function: set default form values, like default quiz title
-    function setDefaults() {
-        document.getElementById("inputName").value = 'SO ' + getDateAndTime();
-    }
-
 
     /**
      * Handle form submit
      */
-    function handleFormSubmit(formObject) { // Send input to function
+    function handleFormSubmit(formObject) {
         document.getElementById('submit').disabled = true;
         document.getElementById('msg').innerHTML = "Creating quiz...";
         google.script.run
@@ -170,6 +150,4 @@
         document.getElementById('msg').innerHTML =
             "Success";
     }
-
-    window.addEventListener('load', loadForm);
 </script>

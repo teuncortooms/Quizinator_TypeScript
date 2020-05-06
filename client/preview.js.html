@@ -16,7 +16,7 @@
     /**
      * When Create Docs is clicked
      */
-    function handleFormSubmit(formObject) {
+    function createDoc(formObject) {
         if ((document.getElementById('percentage_other').checked) && document.getElementById('other_percentage').value == "") {
             document.getElementById('other_percentage').style.backgroundColor = "lightpink";
             document.getElementById('other_percentage').style.borderColor = "red";

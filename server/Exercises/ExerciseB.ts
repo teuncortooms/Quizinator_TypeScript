@@ -3,9 +3,7 @@ class ExerciseTypeB extends Exercise {
 
     get Box() { return this.box }
 
-    public Init(size: number, idioms: Idiom[]) {
-        let type = 'B';
-        let description = "Complete the sentences with words from the box. Translate the words into English.";
+    public Init(type: string, description: string, size: number, idioms: Idiom[]) {
         this.initSuper(type, description, size, idioms);
         this.box = this.fillBox();
     };

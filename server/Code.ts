@@ -21,6 +21,10 @@ function sidebar_loadUnits() {
   return mainController.getUnitsFromSpreadsheet();
 }
 
+function sidebar_loadTypes(){
+  return ExerciseFactory.Descriptions;
+}
+
 function button_createExample_click() {
   let mainController = new MainController;
   mainController.createExampleSheet();

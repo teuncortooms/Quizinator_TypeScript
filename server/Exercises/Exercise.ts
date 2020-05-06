@@ -1,4 +1,4 @@
-abstract class Exercise {
+class Exercise {
 
     protected type: string;
     protected description: string;
@@ -9,7 +9,9 @@ abstract class Exercise {
     get ExerciseItems(): ExerciseItem[] { return this.exerciseItems };
     get Box(): string[][] { return null };
 
-    public abstract Init(size: number, idioms: Idiom[]): void;
+    public Init(type: string, description: string, size: number, idioms: Idiom[]) {
+        this.initSuper(type, description, size, idioms);
+    }
 
     protected initSuper(type: string, description: string, size: number, idioms: Idiom[]) {
         this.type = type;

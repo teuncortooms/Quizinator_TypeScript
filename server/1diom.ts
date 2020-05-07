@@ -16,7 +16,7 @@ class Idiom {
         let translationCol = 1;
         let sentenceCol = 2;
 
-        this.word = this.stripWord(rowData[wordCol]);
+        this.word = this.stripLexicalInfoFromWord(rowData[wordCol]);
         this.sentence = rowData[sentenceCol];
         this.translation = rowData[translationCol];
         this.idiomId = id;
@@ -29,7 +29,7 @@ class Idiom {
         this.idiomId = json.idiomId;
     }
 
-    protected stripWord(word: string) {
+    protected stripLexicalInfoFromWord(word: string) {
         // strip lexical info from an idiom word, i.e. info like (v), (n), (adj) etc.
         let strippedWord = word
             .replace(/\s+\(v\)\s*$/, '') // \s+ = one or more spaces; s\* = zero or more spaces; $ = end of word

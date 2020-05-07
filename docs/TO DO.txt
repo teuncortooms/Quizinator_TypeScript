@@ -1,0 +1,12 @@
+USER STORIES
+- items toevoegen/verwijderen
+- choose number of exercises 
+- Save preview 
+
+CLEANUP
+- start from use case-methods
+- separate data-objects and methods
+- lots of very short methods with long names
+- class names should end with task description ("Creator")
+- boundaries in uml with interfaces to communicate
+- (or never mind class diagrams)

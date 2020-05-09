@@ -27,16 +27,16 @@
                                         </h3>
                                     </td>
 
-                                    <? let itemIds = []; ?>
-                                        <? for (let k = 0; k < quiz.Exercises[i].ExerciseItems.length; k++){ ?>
-                                            <? let itemId = "Ex" + (i+1) + "_item" + (k+1); ?>
-                                                <? itemIds.push(itemId); ?>
+                                    <? let questionIds = []; ?>
+                                        <? for (let k = 0; k < quiz.Exercises[i].Questions.length; k++){ ?>
+                                            <? let questionId = "Ex" + (i+1) + "_question" + (k+1); ?>
+                                                <? questionIds.push(questionId); ?>
                                                     <? } ?>
-                                                        <? let itemIdsString = JSON.stringify(itemIds); ?>
+                                                        <? let questionIdsString = JSON.stringify(questionIds); ?>
 
                                                             <? if (quiz.Exercises[i].Type != 'B') { ?>
                                                                 <td id='showallanswers' style="width:60px;"><span style="font-weight: bold">Answers</span><br>
-                                                                    <a style="font-size: smaller" onclick='showAllAnswers("<?= itemIdsString ?>")'>show</a> / <a style="font-size: smaller" onclick='hideAllAnswers("<?= itemIdsString ?>")'>hide</a></td>
+                                                                    <a style="font-size: smaller" onclick='showAllAnswers("<?= questionIdsString ?>")'>show</a> / <a style="font-size: smaller" onclick='hideAllAnswers("<?= questionIdsString ?>")'>hide</a></td>
                                 </tr>
                                 <? } ?>
 
@@ -54,25 +54,25 @@
                                                 </table>
                                                 </td>
                                                 <td id='showallanswers' style="width:60px;"><span style="font-weight: bold">Answers</span><br>
-                                                    <a style="font-size: smaller" onclick='showAllAnswers("<?= itemIdsString ?>")'>show</a> / <a style="font-size: smaller" onclick='hideAllAnswers("<?= itemIdsString ?>")'>hide</a></td>
+                                                    <a style="font-size: smaller" onclick='showAllAnswers("<?= questionIdsString ?>")'>show</a> / <a style="font-size: smaller" onclick='hideAllAnswers("<?= questionIdsString ?>")'>hide</a></td>
                                         </tr>
                                         <? } ?>
 
-                                            <? for (let k = 0; k < quiz.Exercises[i].ExerciseItems.length; k++){ ?>
+                                            <? for (let k = 0; k < quiz.Exercises[i].Questions.length; k++){ ?>
                                                 <? let exNo = i + 1; ?>
-                                                    <? let itemNo = k + 1; ?>
-                                                        <? let itemId = "Ex" + exNo + "_item" + itemNo; ?>
+                                                    <? let questionNo = k + 1; ?>
+                                                        <? let questionId = "Ex" + exNo + "_question" + questionNo; ?>
 
-                                                            <tr id='itemtr<?= itemId ?>'>
+                                                            <tr id='questiontr<?= questionId ?>'>
                                                                 <td>
-                                                                    <p id='item<?= itemId ?>'>
-                                                                        <?!= itemNo + '. ' + quiz.Exercises[i].ExerciseItems[k].Question ?>
+                                                                    <p id='question<?= questionId ?>'>
+                                                                        <?!= questionNo + '. ' + quiz.Exercises[i].Questions[k].QuestionText ?>
                                                                     </p>
                                                                 </td>
-                                                                <td style="font-size: smaller" id='showanswer<?=itemId?>'><a onclick='showAnswer("<?=itemId?>")'>show</a></td>
-                                                                <td hidden=true style="font-size: smaller" id='answer<?= itemId ?>'>
-                                                                    <?!=quiz.Exercises[i].ExerciseItems[k].Answer ?> (<a onclick='hideAnswer("<?=itemId?>")'>hide</a>)</td>
-                                                                <td style="font-size: smaller" id='dropdowntd<?=itemId?>'><a onclick='configureDropdown("<?=itemId?>")'>change</a></td>
+                                                                <td style="font-size: smaller" id='showanswer<?=questionId?>'><a onclick='showAnswer("<?=questionId?>")'>show</a></td>
+                                                                <td hidden=true style="font-size: smaller" id='answer<?= questionId ?>'>
+                                                                    <?!=quiz.Exercises[i].Questions[k].AnswerText ?> (<a onclick='hideAnswer("<?=questionId?>")'>hide</a>)</td>
+                                                                <td style="font-size: smaller" id='dropdowntd<?=questionId?>'><a onclick='configureDropdown("<?=questionId?>")'>change</a></td>
                                                             </tr>
                                                             <? } ?>
                                                                 <tr style="height:30px;"></tr>
@@ -95,7 +95,6 @@
                         <div id='advanced'>
                             <a onclick='showAdvanced()' style='font-size:x-small;'>Show advanced options</a>
                         </div>
-                        <div id='msg' style='font-style:italic; font-size:small; color:red'></div>
                     </form>
 
     </div>

@@ -1,6 +1,6 @@
 // SET ANSWER FOR TEXTITEM VIA SCRIPT NOT YET AVAILABLE IN FORM API
 
-class QuizForm {
+class FormCreator {
     private form: any;
 
     public get QuizForm() { return this.form }
@@ -28,20 +28,20 @@ class QuizForm {
                 form.addSectionHeaderItem().setTitle(quiz.Exercises[i].Box[0][0]);
             }
 
-            // add items
-            let items = quiz.Exercises[i].ExerciseItems;
-            for (let j = 0; j < items.length; j++) {
-                let item = form.addTextItem();
+            // add questions
+            let questions = quiz.Exercises[i].Questions;
+            for (let j = 0; j < questions.length; j++) {
+                let question = form.addTextItem();
                 if (quiz.Exercises[i].Type != 'A') {
-                    item.setPoints(1).setRequired(true).setTitle(items[j].Question);
+                    question.setPoints(1).setRequired(true).setTitle(questions[j].QuestionText);
                 }
                 else {
                     // remove <u> and </u>
-                    let question = items[j].Question;
+                    let questionText = questions[j].QuestionText;
                     let findMe = "<u>(.*?)<\/u>";
-                    let questionNew = question.replace(findMe, "");  // NOT WORKING
-                    item.setPoints(1).setRequired(true).setTitle(questionNew);
-                    item.setHelpText("(" + items[j].Word + ")");
+                    let questionTextNew = questionText.replace(findMe, "");  // NOT WORKING
+                    question.setPoints(1).setRequired(true).setTitle(questionTextNew);
+                    question.setHelpText("(" + questions[j].Word + ")");
                 }
             }
         }

@@ -13,16 +13,16 @@ class ExerciseTypeB extends Exercise {
         this.box = json.box;
     }
 
-    public ReplaceItem(itemIndex: number, newIdiom: Idiom) {
-        let item = ExerciseItemFactory.Create(this.type, newIdiom);
-        this.exerciseItems[itemIndex] = item;
+    public ReplaceQuestion(questionIndex: number, newIdiom: Idiom) {
+        let question = ExerciseQuestionFactory.Create(this.type, newIdiom);
+        this.questions[questionIndex] = question;
         this.fillBox();
     }
 
     private fillBox(): string[][] {
         let translations: string[] = [];
-        for (let i = 0; i < this.exerciseItems.length; i++) {
-            translations.push(this.exerciseItems[i].Translation);
+        for (let i = 0; i < this.questions.length; i++) {
+            translations.push(this.questions[i].Translation);
         }
         // shuffle translations, turn into string, and put string in 
         // double array (needed for quizdoc)

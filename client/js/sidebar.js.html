@@ -24,35 +24,56 @@
      * Functions to load form
      */
     function loadUnits() {
+        let option = document.createElement("OPTION")
+            .setAttribute("label", "Loading units...")
+            .setAttribute("id", "loadingUnits");
+        document.getElementById("units").innerHTML = '';
+        document.getElementById("units").appendChild(option);
         google.script.run
             .withSuccessHandler(addUnits)
-            .sidebar_loadUnits();
+            .getUniqueUnitsFromSheet();
     }
 
     function loadTypes() {
+        let option = document.createElement("OPTION")
+            .setAttribute("label", "Loading exercises...")
+            .setAttribute("id", "loadingExercises");
+        document.getElementById("exercises").innerHTML = '';
+        document.getElementById("exercises").appendChild(option);
         google.script.run
             .withSuccessHandler(addExercises)
-            .sidebar_loadTypes();
+            .getExerciseTypesWithDescriptions();
     }
 
     function createExample() {
         google.script.run
-            .withSuccessHandler(buildForm)
-            .button_createExample_click();
+            .withSuccessHandler(loadUnits)
+            .createExampleSheetAndUpdateSidebar();
     }
 
     function addUnits(units) {
-        for (let i = 0; i < units.length; i++) {
-            let option = document.createElement("OPTION");
-            let unitno = String(units[i]).match(/\d+/)[0];
+        try {
+            for (let i = 0; i < units.length; i++) {
+                let option = document.createElement("OPTION");
+                let unitno = String(units[i]).match(/\d+/)[0];
 
-            option.setAttribute("id", units[i]);
-            option.setAttribute("value", units[i]);
-            option.setAttribute("label", units[i]);
-            option.setAttribute("style", "text-align:left");
-            option.setAttribute("onclick", "document.getElementById('inputName').value='Quiz Unit " + unitno + " version " + getDateAndTime() + "'");
+                option.setAttribute("id", units[i]);
+                option.setAttribute("value", units[i]);
+                option.setAttribute("label", units[i]);
+                option.setAttribute("style", "text-align:left");
+                option.setAttribute("onclick", "document.getElementById('inputName').value='Quiz Unit " + unitno + " version " + getDateAndTime() + "'");
 
-            document.getElementById("units").appendChild(option);
+                document.getElementById("units").appendChild(option);
+            }
+            document.getElementById("loadingUnits").remove();
+        } catch (error) {
+            if (error instanceof RangeError) {
+                document.getElementById("unitsMessage")
+                    .setAttribute("label", "No units found.");
+            } else {
+                document.getElementById("unitsMessage")
+                    .setAttribute("label", "Failed to load units.");
+            }
         }
     }
 
@@ -72,7 +93,7 @@
             selectLabel.innerHTML = `<b>Exercise ${i + 1}</b>`;
 
             select.setAttribute("id", id);
-            select.setAttribute("name", "inputExTypeArr");
+            select.setAttribute("name", "userinput_ExerciseTypes");
             select.setAttribute("style", "width:250px");
             select.required = true;
             for (let type in descriptions) {
@@ -85,9 +106,9 @@
                 select.childNodes[i].selected = true;
             }
 
-            howManyLabel.innerHTML = "How many items? ";
+            howManyLabel.innerHTML = "With how many questions? ";
 
-            howMany.setAttribute("name", "inputItemsPerExArr");
+            howMany.setAttribute("name", "userinput_ExerciseSizes");
             howMany.setAttribute("type", "number");
             howMany.setAttribute("value", [5, 8, 10][i] || 5); // default sizes
             howMany.setAttribute("style", "width:45px");
@@ -99,7 +120,7 @@
             div.appendChild(howMany);
             document.getElementById("exercises").appendChild(div);
         }
-        document.getElementById("loading").remove();
+        document.getElementById("loadingExercises").remove();
     }
 
     function setDefaultTitle() {

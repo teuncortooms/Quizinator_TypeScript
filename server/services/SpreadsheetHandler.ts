@@ -1,4 +1,4 @@
-class Spreadsheet {
+class SpreadsheetHandler {
     private spreadsheetId: any;
     private sheet: any;
 
@@ -40,7 +40,7 @@ class Spreadsheet {
         return uniqueunits;
     }
 
-    public addExampleSheet() {
+    public createExampleSheet() {
         let exampleSheet = this.spreadsheetId.getSheetByName("Example sheet");
         if (exampleSheet != null) {
             this.sheet = exampleSheet;
@@ -79,11 +79,16 @@ class Spreadsheet {
             ["often", "vaak", "I fight with my brother very often - almost every day, in fact.", "Unit 3"],
             ["music", "muziek", "I hate loud music, but I love soft rock.", "Unit 3"],
             ["holiday", "vakantie", "The beaches are busy in August because everyone is on holiday then.", "Unit 3"],
-            ["enjoy", "genieten", "It’s nice to do tests. I really enjoy the silence.", "Unit 3"]
+            ["enjoy", "genieten", "It’s nice to do tests. I really enjoy the silence.", "Unit 3"],
+            ["competence", "compententie", "I regard him as a man of integrity and high professional competence.", "Unit 3"],
+            ["compendium", "compendium", "His book is a delightful compendium of important questions.", "Unit 3"],
+            ["compassion", "mededogen", "There is no need to show compassion for him.", "Unit 3"],
+            ["libidinous", "wellustig", "The child should be kept away from libidinous movies.", "Unit 3"],
+            ["revelry", "feestvreugde", "I called the police when my neighbours refused to settle down and end their revelry.", "Unit 3"]
         ];
-        this.sheet.getRange("A1:D30").setValues(values);
+        this.sheet.getRange("A1:D35").setValues(values);
         if (this.sheet.getFilter() == null) {
-            this.sheet.getRange("1:30").createFilter();
+            this.sheet.getRange("1:35").createFilter();
         }
         this.sheet.getRange("A2")
             .setNote("lexical info like (v), (n), (adj) does not need to be removed for the addon to function");

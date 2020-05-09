@@ -1,4 +1,4 @@
-// filename prefixed with '1' because this needs to load before class ExerciseItem. Better solution?
+// filename prefixed with '1' because this needs to load before class ExerciseQuestion. Better solution?
 
 class Idiom {
     protected idiomId: number;

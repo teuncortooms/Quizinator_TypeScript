@@ -11,7 +11,8 @@ class Quiz {
         this.makeExercises(exerciseTypes, exerciseSizes, idioms);
     }
 
-    public Load(str: string) {
+    public Load(cachehelper: CacheHelper) {
+        let str = cachehelper.Load('quiz');
         let json = JSON.parse(str);
         this.title = json.title;
         this.exercises = [];

@@ -58,31 +58,31 @@
     /**
      * Functions to show and hide answers
      */
-    function showAnswer(itemId) {
-        let showanswerid = 'showanswer' + itemId;
-        let answerid = 'answer' + itemId;
+    function showAnswer(questionId) {
+        let showanswerid = 'showanswer' + questionId;
+        let answerid = 'answer' + questionId;
         document.getElementById(showanswerid).setAttribute("hidden", true);
         document.getElementById(answerid).removeAttribute("hidden");
     }
 
-    function hideAnswer(itemId) {
-        let showanswerid = 'showanswer' + itemId;
-        let answerid = 'answer' + itemId;
+    function hideAnswer(questionId) {
+        let showanswerid = 'showanswer' + questionId;
+        let answerid = 'answer' + questionId;
         document.getElementById(answerid).setAttribute("hidden", true);
         document.getElementById(showanswerid).removeAttribute("hidden");
     }
 
-    function showAllAnswers(itemIdsString) {
-        let itemIds = JSON.parse(itemIdsString);
-        for (let i = 0; i < itemIds.length; i++) {
-            showAnswer(itemIds[i]);
+    function showAllAnswers(questionIdsString) {
+        let questionIds = JSON.parse(questionIdsString);
+        for (let i = 0; i < questionIds.length; i++) {
+            showAnswer(questionIds[i]);
         }
     }
 
-    function hideAllAnswers(itemIds) {
-        itemIds = JSON.parse(itemIds);
-        for (let e in itemIds) {
-            hideAnswer(itemIds[e]);
+    function hideAllAnswers(questionIds) {
+        questionIds = JSON.parse(questionIds);
+        for (let e in questionIds) {
+            hideAnswer(questionIds[e]);
         }
     }
 
@@ -114,14 +114,14 @@
      * configureDropdown gets list of available words from idioms
      * createDropdown then creates the dropdown menu
      */
-    function configureDropdown(itemId) {
+    function configureDropdown(questionId) {
         google.script.run
             .withSuccessHandler(createDropdown)
-            .withUserObject(itemId)
-            .button_changeItem_click();
+            .withUserObject(questionId)
+            .button_changeQuestion_click();
     }
 
-    function createDropdown(availableIdioms, itemId) {
+    function createDropdown(availableIdioms, questionId) {
         // remove any existing dropdown
         let elementExists = document.getElementById("dropdown");
         if (document.getElementById("dropdown") != null) {
@@ -133,17 +133,17 @@
         // create dropdown
         let sel = document.createElement("select");
         sel.id = "dropdown";
-        sel.name = "dropdown" + itemId;
-        sel.setAttribute("onchange", "replaceItem('" + itemId + "', this.value)");
+        sel.name = "dropdown" + questionId;
+        sel.setAttribute("onchange", "replaceQuestion('" + questionId + "', this.value)");
 
-        // append dropdown and remove word "Change" behind this item
-        document.getElementById("dropdowntd" + itemId).firstChild.setAttribute("hidden", true);
-        document.getElementById("dropdowntd" + itemId).appendChild(sel);
+        // append dropdown and remove word "Change" behind this question
+        document.getElementById("dropdowntd" + questionId).firstChild.setAttribute("hidden", true);
+        document.getElementById("dropdowntd" + questionId).appendChild(sel);
 
         // populate dropdown with options
         let opt = document.createElement("option");
-        opt.text = "<select an item>";
-        opt.value = itemId; // The first option cancels loading new data
+        opt.text = "<select an idiom>";
+        opt.value = questionId; // The first option cancels loading new data
         document.getElementById("dropdown").appendChild(opt);
 
         for (let i = 0; i < availableIdioms.length; i++) {
@@ -156,28 +156,28 @@
 
 
     /**
-     * Calls function on server to replace an idiom item
-     * and then displays the new item in the preview
+     * Calls function on server to replace a question
+     * and then displays the new question in the preview
      */
-    function replaceItem(itemId, newIdiomId) {
-        let referenceArr = itemId.split("Ex")[1].split("_item");
+    function replaceQuestion(questionId, newIdiomId) {
+        let referenceArr = questionId.split("Ex")[1].split("_question");
         let exerciseIndex = referenceArr[0] - 1;
-        let itemIndex = referenceArr[1] - 1;
+        let questionIndex = referenceArr[1] - 1;
 
         google.script.run
             .withSuccessHandler(updatePreview)
-            .withUserObject(itemId)
-            .dropDown_item_select(exerciseIndex, itemIndex, newIdiomId);
+            .withUserObject(questionId)
+            .dropDown_idiom_select(exerciseIndex, questionIndex, newIdiomId);
     }
 
 
-    function updatePreview(quiz, itemId) {
-        let referenceArr = itemId.split("Ex")[1].split("_item");
+    function updatePreview(quiz, questionId) {
+        let referenceArr = questionId.split("Ex")[1].split("_question");
         let exerciseIndex = referenceArr[0] - 1;
-        let itemIndex = referenceArr[1] - 1;
+        let questionIndex = referenceArr[1] - 1;
 
-        let newItem = quiz.exercises[exerciseIndex].exerciseItems[itemIndex];
-        displayNewItem(newItem, itemId);
+        let newQuestion = quiz.exercises[exerciseIndex].questions[questionIndex];
+        displayNewQuestion(newQuestion, questionId);
 
         if (quiz.exercises[exerciseIndex].box) {
             updateBox(quiz.exercises[exerciseIndex].box);
@@ -185,21 +185,19 @@
 
     }
 
-    function displayNewItem(newItem, itemId) {
-        let referenceArr = itemId.split("Ex")[1].split("_item");
-        let itemNo = referenceArr[1];
-
-        let itemtr = document.getElementById('itemtr' + itemId);
-
-        itemtr.innerHTML = "" +
-            "<td><p id='item" + itemId + "'>" +
-            itemNo + ". " + newItem.question + "</p></td>" +
-            "<td style='font-size: smaller' id='showanswer" + itemId + "'>" +
-            "<a onclick='showAnswer(\"" + itemId + "\")'>show</a></td>" +
-            "<td hidden=true style='font-size: smaller' id='answer" + itemId + "'>" +
-            newItem.answer + " (<a onclick='hideAnswer(\"" + itemId + "\")'>hide</a>)</td>" +
-            "<td style='font-size: smaller' id='dropdowntd" + itemId + "'>" +
-            "<a onclick='configureDropdown(\"" + itemId + "\")'>change</a></td>";
+    function displayNewQuestion(newQuestion, questionId) {
+        let referenceArr = questionId.split("Ex")[1].split("_question");
+        let questionNo = referenceArr[1];
+        let questiontr = document.getElementById('questiontr' + questionId);
+        questiontr.innerHTML = "" +
+            "<td><p id='question" + questionId + "'>" +
+            questionNo + ". " + newQuestion.questionText + "</p></td>" +
+            "<td style='font-size: smaller' id='showanswer" + questionId + "'>" +
+            "<a onclick='showAnswer(\"" + questionId + "\")'>show</a></td>" +
+            "<td hidden=true style='font-size: smaller' id='answer" + questionId + "'>" +
+            newQuestion.answerText + " (<a onclick='hideAnswer(\"" + questionId + "\")'>hide</a>)</td>" +
+            "<td style='font-size: smaller' id='dropdowntd" + questionId + "'>" +
+            "<a onclick='configureDropdown(\"" + questionId + "\")'>change</a></td>";
     }
 
     function updateBox(box) {

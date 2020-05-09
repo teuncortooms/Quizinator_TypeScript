@@ -1,17 +1,17 @@
-abstract class ExerciseItem extends Idiom {
-    protected question: string;
-    protected answer: string;
+abstract class ExerciseQuestion extends Idiom {
+    protected questionText: string;
+    protected answerText: string;
 
-    get Question() { return this.question; }
-    get Answer() { return this.answer; }
+    get QuestionText() { return this.questionText; }
+    get AnswerText() { return this.answerText; }
 
     public Init(idiom: Idiom) {
         this.idiomId = idiom.IdiomId;
         this.word = idiom.Word;
         this.sentence = idiom.Sentence;
         this.translation = idiom.Translation;
-        this.setQuestion();
-        this.setAnswer();
+        this.setQuestionText();
+        this.setAnswerText();
     }
 
     public Load(json: any) {
@@ -19,12 +19,12 @@ abstract class ExerciseItem extends Idiom {
         this.word = json.word;
         this.sentence = json.sentence;
         this.translation = json.translation;
-        this.question = json.question;
-        this.answer = json.answer;
+        this.questionText = json.questionText;
+        this.answerText = json.answerText;
     }
 
-    protected abstract setQuestion(): void;
-    protected abstract setAnswer(): void;
+    protected abstract setQuestionText(): void;
+    protected abstract setAnswerText(): void;
 
     protected makeGapInSentence(sentence: string, word: string) {
         let regEx = new RegExp(word, "ig");

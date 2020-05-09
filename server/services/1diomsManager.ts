@@ -1,4 +1,4 @@
-class IdiomsStore {
+class IdiomsManager {
     private idioms: Idiom[];
     private selectedIndices: number[];
 
@@ -27,13 +27,14 @@ class IdiomsStore {
         return availableIdioms;
     }
 
-    public Init(units: any, selectionSize: any, spreadsheet: Spreadsheet) {
+    public Init(units: any, selectionSize: any, spreadsheet: SpreadsheetHandler) {
         this.idioms = this.findIdioms(units, spreadsheet);
         this.checkSize(selectionSize);
         this.selectedIndices = this.getRandomIndices(selectionSize);
     }
 
-    public Load(str: string) {
+    public Load(cachehelper: CacheHelper) {
+        let str = cachehelper.Load('idiomsManager')
         let json = JSON.parse(str);
         this.idioms = [];
         this.selectedIndices = json.selectedIndices;
@@ -74,7 +75,7 @@ class IdiomsStore {
         return requestedIdiom;
     }
 
-    private findIdioms(units: any, spreadsheet: Spreadsheet): Idiom[] {
+    private findIdioms(units: any, spreadsheet: SpreadsheetHandler): Idiom[] {
         let data = spreadsheet.Data;
         let unitCol = 3;
         let idioms: Idiom[] = [];
@@ -97,13 +98,13 @@ class IdiomsStore {
     };
 
     private checkSize(selectionSize: any) {
-        // Check if sum of requested quiz items isn't higher than max idioms
+        // Check if sum of requested exercise questions isn't higher than max idioms
         let maxIdioms = this.idioms.length;
 
         if (isNaN(selectionSize) || selectionSize < 1 || selectionSize > maxIdioms) {
-            Browser.msgBox('Error', Utilities.formatString('Total number of quiz '
-                + 'items ("%s") is not valid. There are not that many idiom items '
-                + 'available in your selection (units). Check if your total item count '
+            Browser.msgBox('Error', Utilities.formatString('Total number of '
+                + 'questions ("%s") is not valid. There are not that many idioms '
+                + 'available in your selection (units). Check if your total question count '
                 + 'is a number between 1 and %d', selectionSize, maxIdioms), Browser.Buttons.OK);
             throw 'foutje';
         };

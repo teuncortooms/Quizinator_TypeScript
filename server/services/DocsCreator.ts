@@ -1,4 +1,4 @@
-class QuizDocs {
+class DocsCreator {
     private norm: number;
     private quizDoc: any;
     private answerKeyDoc: any;
@@ -58,14 +58,14 @@ class QuizDocs {
                 body.appendTable(quiz.Exercises[i].Box);
             }
 
-            // add items
-            let items = quiz.Exercises[i].ExerciseItems;
+            // add questions
+            let questions = quiz.Exercises[i].Questions;
             let table = body.appendTable();
             let listId = null;
-            for (let j = 0; j < items.length; j++) {
+            for (let j = 0; j < questions.length; j++) {
                 let row = table.appendTableRow();
                 let cell1 = row.appendTableCell();
-                let listItem = cell1.appendListItem(items[j].Question);
+                let listItem = cell1.appendListItem(questions[j].QuestionText);
                 if (listId == null) {
                     listId = listItem;
                 }
@@ -81,7 +81,7 @@ class QuizDocs {
                 }
                 else if (type == "key") {
                     // add cell with answer
-                    row.appendTableCell(quiz.Exercises[i].ExerciseItems[j].Answer);
+                    row.appendTableCell(quiz.Exercises[i].Questions[j].AnswerText);
                 }
 
                 table.setColumnWidth(0, 350);
@@ -120,7 +120,7 @@ class QuizDocs {
         let norm = this.norm;
 
         for (let ex of quiz.Exercises) {
-            maxPoints += ex.ExerciseItems.length;
+            maxPoints += ex.Questions.length;
         }
 
         let normTable: any[][] = [["Max Punten: " + maxPoints + "\r" + norm + "% goed = " + Math.round(norm * maxPoints) / 100 + " punten = cijfer 6"]];

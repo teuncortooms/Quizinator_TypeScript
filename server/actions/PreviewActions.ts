@@ -9,13 +9,13 @@ function openPreview(quiz: Quiz) {
 
 function button_changeQuestion_click() {
   let designer = new QuizDesigner;
-  designer.Load();
+  designer.Load(new CacheHelper);
   return designer.IdiomsManager.AvailableIdioms;
 }
 
 function dropDown_idiom_select(exerciseIndex: number, questionIndex: number, idiomId: number) {
   let designer = new QuizDesigner;
-  designer.Load();
+  designer.Load(new CacheHelper);
   designer.ReplaceQuestion(exerciseIndex, questionIndex, idiomId);
   return designer.Quiz;
 }
@@ -32,7 +32,4 @@ function button_createForm_click() {
   quiz.Load(new CacheHelper());
   let form = new FormCreator();
   form.Generate(quiz);
-
-  mainController.Load();
-  mainController.CreateQuizForm();
 }

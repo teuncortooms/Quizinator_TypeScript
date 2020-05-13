@@ -1,5 +1,3 @@
-// filename prefixed with '1' because this needs to load before class ExerciseQuestion. Better solution?
-
 class Idiom {
     protected idiomId: number;
     protected word: string;

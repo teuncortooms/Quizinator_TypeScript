@@ -1,5 +1,5 @@
 class QuizDesigner {
-    private idiomsManager: IdiomsManager;
+    private idiomsManager: IdiomsSupplier;
     private quiz: Quiz;
 
     get IdiomsManager() { return this.idiomsManager };
@@ -20,13 +20,13 @@ class QuizDesigner {
         else throw "constructor params missing!";
     }
 
-    private Init(quiz: Quiz, idiomsManager: IdiomsManager) {
+    private Init(quiz: Quiz, idiomsManager: IdiomsSupplier) {
         this.quiz = quiz;
         this.idiomsManager = idiomsManager;
     }
 
     private Load(cachehelper: CacheHelper) {
-        this.idiomsManager = new IdiomsManager({ cachehelper });
+        this.idiomsManager = new IdiomsSupplier({ cachehelper });
         this.quiz = new Quiz({ cachehelper });
     }
 

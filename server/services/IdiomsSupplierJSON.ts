@@ -1,4 +1,4 @@
-interface IdiomsManagerJSON {
+interface IdiomsSupplierJSON {
     idioms: IdiomJSON[];
     selectedIndices: number[];
 }

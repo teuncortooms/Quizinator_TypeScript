@@ -1,4 +1,4 @@
-interface IdiomsManagerConfig {
+interface IdiomsSupplierConfig {
     units?: string[];
     selectionSize?: number;
     spreadsheetHandler?: SpreadsheetHandler;

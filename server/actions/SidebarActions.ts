@@ -19,7 +19,7 @@ function getExerciseTypesWithDescriptions() {
 
 function createAndPreviewQuiz(formObject: FormData) {
   let input = new UserInputConverter(formObject);
-  let idiomsManager = new IdiomsManager({
+  let idiomsManager = new IdiomsSupplier({
     units: input.Units,
     selectionSize: input.TotalSize,
     spreadsheetHandler: new SpreadsheetHandler()

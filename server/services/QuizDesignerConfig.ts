@@ -1,5 +1,5 @@
 interface QuizDesignerConfig {
     quiz?: Quiz;
-    idiomsManager?: IdiomsManager;
+    idiomsManager?: IdiomsSupplier;
     cachehelper?: CacheHelper;
 }

@@ -1,4 +1,4 @@
-class IdiomsManager {
+class IdiomsSupplier {
     private idioms: Idiom[];
     private selectedIndices: number[];
 
@@ -27,7 +27,7 @@ class IdiomsManager {
         return availableIdioms;
     }
 
-    public constructor(params: IdiomsManagerConfig = {} as IdiomsManagerConfig) {
+    public constructor(params: IdiomsSupplierConfig = {} as IdiomsSupplierConfig) {
         let {
             units = [],
             selectionSize = null,
@@ -49,7 +49,7 @@ class IdiomsManager {
 
     private Load(cachehelper: CacheHelper) {
         let str = cachehelper.Load('idiomsManager')
-        let json: IdiomsManagerJSON = JSON.parse(str);
+        let json: IdiomsSupplierJSON = JSON.parse(str);
         this.idioms = [];
         this.selectedIndices = json.selectedIndices;
         for (let i = 0; i < json.idioms.length; i++) {

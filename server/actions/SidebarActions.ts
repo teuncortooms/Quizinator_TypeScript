@@ -1,38 +1,36 @@
 function openSidebar() {
-  let html = HtmlService.createTemplateFromFile('client/sidebar').evaluate()
-    .setSandboxMode(HtmlService.SandboxMode.IFRAME)
-    .setTitle("Quizinator for Google Sheets");
-  SpreadsheetApp.getUi().showSidebar(html);
+  let presenter = new Presenter;
+  presenter.ShowSidebar(new AppSettings);
 }
 
 function getUniqueUnitsFromSheet() {
   return (new SpreadsheetHandler).Units;
 }
 
-function createExampleSheetAndUpdateSidebar() {
-  let spreadsheet = new SpreadsheetHandler();
-  spreadsheet.createExampleSheet();
-  return spreadsheet.Units;
+function createExampleSheetAndGetUniqueUnits() {
+  let SSHandler = new SpreadsheetHandler;
+  SSHandler.createExampleSheet();
+  return SSHandler.Units;
 }
 
 function getExerciseTypesWithDescriptions() {
   return ExerciseFactory.Descriptions;
 }
 
-// function button_previewQuiz_click(formObject: any) {
-//   let mainController = new QuizDesigner();
-//   mainController.Init(formObject);
-//   mainController.previewQuiz();
-// }
-
-function createAndPreviewQuiz(formObject: any) {
+function createAndPreviewQuiz(formObject: FormData) {
   let input = new UserInputConverter(formObject);
-  let idiomsManager = new IdiomsManager();
-  let quiz = new Quiz();
-  let quizDesigner = new QuizDesigner();
-  idiomsManager.Init(input.Units, input.TotalSize, new SpreadsheetHandler());
-  quiz.Init(input.Title, input.ExerciseTypes, input.ExerciseSizes, idiomsManager.SelectedIdioms);
-  quizDesigner.Init(quiz, idiomsManager);
+  let idiomsManager = new IdiomsManager({
+    units: input.Units,
+    selectionSize: input.TotalSize,
+    spreadsheetHandler: new SpreadsheetHandler()
+  });
+  let quiz = new Quiz({
+    title: input.Title, 
+    exerciseTypes: input.ExerciseTypes,
+    exerciseSizes: input.ExerciseSizes,
+    idioms: idiomsManager.SelectedIdioms
+  });
+  let quizDesigner = new QuizDesigner({quiz, idiomsManager});
 
   openPreview(quiz);
 }

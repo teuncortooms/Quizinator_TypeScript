@@ -1,5 +1,5 @@
 function openPreview(quiz: Quiz) {
-  let template = HtmlService.createTemplateFromFile('client/preview')
+  let template = HtmlService.createTemplateFromFile('client/preview');
   template.quiz = quiz;
   let html = template.evaluate()
     .setWidth(800)
@@ -8,28 +8,24 @@ function openPreview(quiz: Quiz) {
 }
 
 function button_changeQuestion_click() {
-  let designer = new QuizDesigner;
-  designer.Load(new CacheHelper);
+  let designer = new QuizDesigner({cachehelper: new CacheHelper});
   return designer.IdiomsManager.AvailableIdioms;
 }
 
 function dropDown_idiom_select(exerciseIndex: number, questionIndex: number, idiomId: number) {
-  let designer = new QuizDesigner;
-  designer.Load(new CacheHelper);
+  let designer = new QuizDesigner({cachehelper: new CacheHelper});
   designer.ReplaceQuestion(exerciseIndex, questionIndex, idiomId);
   return designer.Quiz;
 }
 
 function button_createDoc_click(formObject: any) {
-  let quiz = new Quiz();
-  quiz.Load(new CacheHelper());
+  let quiz = new Quiz({cachehelper: new CacheHelper});
   let docs = new DocsCreator(formObject);
   docs.Generate(quiz);
 }
 
 function button_createForm_click() {
-  let quiz = new Quiz();
-  quiz.Load(new CacheHelper());
+  let quiz = new Quiz({cachehelper: new CacheHelper});
   let form = new FormCreator();
   form.Generate(quiz);
 }

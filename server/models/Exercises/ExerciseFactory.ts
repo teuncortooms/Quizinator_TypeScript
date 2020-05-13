@@ -7,29 +7,23 @@ class ExerciseFactory {
         "E": "Translate the words into English."
     }
 
-    static get Descriptions(){ return this.descriptions };
+    static get Descriptions() { return this.descriptions };
 
-    public static Create(type: string, size: number, idioms: Idiom[]): Exercise {
-        let exercise: Exercise = this.pick(type);
-        exercise.Init(type, this.descriptions[type], size, idioms);
-        return exercise;
-    }
-
-    public static CreateFromCache(json: any): Exercise {
-        let type = json.type;
-        let exercise: Exercise = this.pick(type);
-        exercise.Load(json);
-        return exercise;
-    }
-
-    private static pick(type: string): Exercise {
-        switch (type) {
+    public static Create(params: ExerciseConfig = {} as ExerciseConfig): Exercise {
+        params.description = params.description || this.descriptions[params.type];
+        let exercise: Exercise;
+        switch (params.type) {
             case 'A':
             case 'C':
             case 'D':
-            case 'E': return new Exercise();
-            case 'B': return new ExerciseTypeB();
-            default: throw "Unknown exercise type: " + type;
+            case 'E': 
+                exercise = new Exercise(params);
+                break;
+            case 'B': 
+                exercise = new ExerciseTypeB(params);
+                break;
+            default: throw "Unknown exercise type: " + params.type;
         }
+        return exercise;
     }
 }

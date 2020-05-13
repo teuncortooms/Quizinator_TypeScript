@@ -1,4 +1,4 @@
-class ExerciseQuestionTypeC extends ExerciseQuestion {
+class QuestionTypeC extends Question {
     // Type C: Complete the sentence using a translation
 
     // override

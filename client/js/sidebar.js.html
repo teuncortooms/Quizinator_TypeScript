@@ -24,9 +24,9 @@
      * Functions to load form
      */
     function loadUnits() {
-        let option = document.createElement("OPTION")
-            .setAttribute("label", "Loading units...")
-            .setAttribute("id", "loadingUnits");
+        let option = document.createElement("OPTION");
+        option.setAttribute("label", "Loading units...")
+        option.setAttribute("id", "loadingUnits");
         document.getElementById("units").innerHTML = '';
         document.getElementById("units").appendChild(option);
         google.script.run
@@ -36,8 +36,8 @@
 
     function loadTypes() {
         let option = document.createElement("OPTION")
-            .setAttribute("label", "Loading exercises...")
-            .setAttribute("id", "loadingExercises");
+        option.setAttribute("label", "Loading exercises...")
+        option.setAttribute("id", "loadingExercises");
         document.getElementById("exercises").innerHTML = '';
         document.getElementById("exercises").appendChild(option);
         google.script.run
@@ -48,7 +48,7 @@
     function createExample() {
         google.script.run
             .withSuccessHandler(loadUnits)
-            .createExampleSheetAndUpdateSidebar();
+            .createExampleSheetAndReturnUnits();
     }
 
     function addUnits(units) {
@@ -157,7 +157,7 @@
         google.script.run
             .withFailureHandler(onFailure)
             .withSuccessHandler(onSuccess)
-            .button_previewQuiz_click(formObject);
+            .createAndPreviewQuiz(formObject);
     }
 
     function onFailure(error) {

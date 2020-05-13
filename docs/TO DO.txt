@@ -4,12 +4,17 @@ USER STORIES
 - Save preview 
 
 CLEANUP
+doing
+- main controller opslitsen en naam wijzigen
+backlog
+- extract [methods] till you drop (classes hide in long functions)
 - separate data-objects and methods
 - all strings to consts
-- start from use case-methods
-- main controller opslitsen en naam wijzigen
 - lots of very short methods with long names
-- class names should end with task description ("Creator")
 - boundaries in uml with interfaces to communicate
 - pijlen één richting door boundaries
 - (or never mind class diagrams)
+- Load data asyncronously (preview.html)
+done
+- start from use case-methods --> now actions?
+- class names should end with task description ("Creator")

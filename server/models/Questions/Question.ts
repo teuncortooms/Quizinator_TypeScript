@@ -1,11 +1,26 @@
-abstract class ExerciseQuestion extends Idiom {
+abstract class Question extends Idiom {
     protected questionText: string;
     protected answerText: string;
 
     get QuestionText() { return this.questionText; }
     get AnswerText() { return this.answerText; }
 
-    public Init(idiom: Idiom) {
+    public constructor(params: QuestionConfig = {} as QuestionConfig) {
+        super();
+        let {
+            idiom = null,
+            questionJSON = null
+        } = params;
+        if (idiom) {
+            this.convertIdiomToQuestion(idiom);
+        }
+        else if (questionJSON) {
+            this.convertJSONToQuestion(questionJSON);
+        }
+        else throw "Constructor parameters missing!";
+    }
+
+    private convertIdiomToQuestion(idiom: Idiom) {
         this.idiomId = idiom.IdiomId;
         this.word = idiom.Word;
         this.sentence = idiom.Sentence;
@@ -14,7 +29,7 @@ abstract class ExerciseQuestion extends Idiom {
         this.setAnswerText();
     }
 
-    public Load(json: any) {
+    protected convertJSONToQuestion(json: QuestionJSON) {
         this.idiomId = json.idiomId;
         this.word = json.word;
         this.sentence = json.sentence;

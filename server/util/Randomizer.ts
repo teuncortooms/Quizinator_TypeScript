@@ -1,4 +1,4 @@
-class Util {
+class Randomizer {
 
   // // Generate a random integer
   // public static getRandomInt(min: number, max: number): number {
@@ -6,14 +6,14 @@ class Util {
   // }
 
   // Generate an array of random integers (used to select random idioms)
-  public static getNRandomInts(from: number, to: number, n: number): number[] {
+  public static GetNRandomInts(from: number, to: number, n: number): number[] {
     let numbers: number[] = [];
     let shuffledNumbers: number[] = [];
     let selection: number[] = [];
     for (let i = from; i <= to; i++) {
       numbers.push(i);
     }
-    shuffledNumbers = this.shuffle(numbers);
+    shuffledNumbers = this.Shuffle(numbers);
     for (let i = 0; i < n; i++) {
       selection.push(shuffledNumbers[i]);
     }
@@ -21,7 +21,7 @@ class Util {
   }
 
   // Shuffle an array
-  public static shuffle(array: any[]): any[] {
+  public static Shuffle(array: any[]): any[] {
     let currentIndex: number = array.length;
 
     // While there remain elements to shuffle...

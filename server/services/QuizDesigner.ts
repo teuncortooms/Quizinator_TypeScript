@@ -5,17 +5,29 @@ class QuizDesigner {
     get IdiomsManager() { return this.idiomsManager };
     get Quiz() { return this.quiz };
 
-    public Init(quiz: Quiz, idiomsManager: IdiomsManager) {
-        this.quiz = quiz;
-        this.idiomsManager = idiomsManager;
-        this.save();
+    public constructor(params: QuizDesignerConfig = {} as QuizDesignerConfig) {
+        let {
+            quiz = null,
+            idiomsManager = null,
+            cachehelper = null
+        } = params;
+        if (cachehelper)
+            this.Load(cachehelper);
+        else if (quiz && idiomsManager) {
+            this.Init(quiz, idiomsManager);
+            this.save();
+        }
+        else throw "constructor params missing!";
     }
 
-    public Load(cachehelper: CacheHelper) {
-        this.idiomsManager = new IdiomsManager();
-        this.idiomsManager.Load(cachehelper);
-        this.quiz = new Quiz();
-        this.quiz.Load(cachehelper);
+    private Init(quiz: Quiz, idiomsManager: IdiomsManager) {
+        this.quiz = quiz;
+        this.idiomsManager = idiomsManager;
+    }
+
+    private Load(cachehelper: CacheHelper) {
+        this.idiomsManager = new IdiomsManager({ cachehelper });
+        this.quiz = new Quiz({ cachehelper });
     }
 
     public ReplaceQuestion(exerciseIndex: number, questionIndex: number, newIdiomId: number) {
@@ -23,20 +35,15 @@ class QuizDesigner {
         let newIdiom: Idiom;
 
         oldIdiomId = this.quiz.Exercises[exerciseIndex].Questions[questionIndex].IdiomId;
-
-        // Update idiomsManager and get new idiom
-        this.idiomsManager.ReplaceIdiom(oldIdiomId, newIdiomId);
         newIdiom = this.idiomsManager.GetIdiom(newIdiomId);
 
-        // Update quiz question
+        this.idiomsManager.ReplaceIdiom(oldIdiomId, newIdiomId);
         this.quiz.Exercises[exerciseIndex].ReplaceQuestion(questionIndex, newIdiom);
 
-        // Save to cache
         this.save();
     }
 
     private save() {
-        // Save to cache
         let cachehelper: CacheHelper = new CacheHelper;
         cachehelper.Clear();
         cachehelper.Save('idiomsManager', this.idiomsManager);

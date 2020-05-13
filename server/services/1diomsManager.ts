@@ -27,20 +27,33 @@ class IdiomsManager {
         return availableIdioms;
     }
 
-    public Init(units: any, selectionSize: any, spreadsheet: SpreadsheetHandler) {
-        this.idioms = this.findIdioms(units, spreadsheet);
+    public constructor(params: IdiomsManagerConfig = {} as IdiomsManagerConfig) {
+        let {
+            units = [],
+            selectionSize = null,
+            spreadsheetHandler = new SpreadsheetHandler,
+            cachehelper = null
+        } = params;
+        if (cachehelper)
+            this.Load(cachehelper);
+        else if (units && selectionSize && spreadsheetHandler)
+            this.setMembers(units, selectionSize, spreadsheetHandler);
+        else throw "Constructor params missing!";
+    }
+
+    private setMembers(units: string[], selectionSize: number, spreadsheetHandler: SpreadsheetHandler) {
+        this.idioms = this.findIdioms(units, spreadsheetHandler);
         this.checkSize(selectionSize);
         this.selectedIndices = this.getRandomIndices(selectionSize);
     }
 
-    public Load(cachehelper: CacheHelper) {
+    private Load(cachehelper: CacheHelper) {
         let str = cachehelper.Load('idiomsManager')
-        let json = JSON.parse(str);
+        let json: IdiomsManagerJSON = JSON.parse(str);
         this.idioms = [];
         this.selectedIndices = json.selectedIndices;
         for (let i = 0; i < json.idioms.length; i++) {
-            this.idioms[i] = new Idiom();
-            this.idioms[i].Load(json.idioms[i]);
+            this.idioms[i] = new Idiom({idiomJSON: json.idioms[i]});
         }
     }
 
@@ -75,7 +88,7 @@ class IdiomsManager {
         return requestedIdiom;
     }
 
-    private findIdioms(units: any, spreadsheet: SpreadsheetHandler): Idiom[] {
+    private findIdioms(units: string[], spreadsheet: SpreadsheetHandler): Idiom[] {
         let data = spreadsheet.Data;
         let unitCol = 3;
         let idioms: Idiom[] = [];
@@ -87,8 +100,7 @@ class IdiomsManager {
                 if (data[row][unitCol] == units[i]) {
                     // make new idiom
                     let rowData = data[row];
-                    let idiom = new Idiom();
-                    idiom.Init(row, rowData);
+                    let idiom = new Idiom({id: Number(row), rowData});
                     // add to idioms
                     idioms.push(idiom);
                 };
@@ -112,7 +124,7 @@ class IdiomsManager {
     }
 
     private getRandomIndices(selectionSize: number): number[] {
-        let idiomIndices: number[] = Util.getNRandomInts(0, this.idioms.length - 1, selectionSize);
+        let idiomIndices: number[] = Randomizer.GetNRandomInts(0, this.idioms.length - 1, selectionSize);
         return idiomIndices;
     };
 }

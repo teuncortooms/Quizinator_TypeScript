@@ -11,10 +11,22 @@ class Idiom {
     get Sentence(): string { return this.sentence; }
     get Translation(): string { return this.translation; }
 
-    public Init(id: any, rowData: any) {
-        let wordCol = 0;
-        let translationCol = 1;
-        let sentenceCol = 2;
+    public constructor(params: IdiomConfig = {} as IdiomConfig) {
+        let {
+            id = null,
+            rowData = null,
+            idiomJSON = null
+        } = params;
+        if (idiomJSON)
+            this.convertJSONToQuestion(idiomJSON)
+        else if (id && rowData)
+            this.setMembersFromRowData(id, rowData);
+    }
+
+    private setMembersFromRowData(id: number, rowData: string[]) {
+        const wordCol = 0;
+        const translationCol = 1;
+        const sentenceCol = 2;
 
         this.word = this.stripLexicalInfoFromWord(rowData[wordCol]);
         this.sentence = rowData[sentenceCol];
@@ -22,7 +34,7 @@ class Idiom {
         this.idiomId = id;
     }
 
-    public Load(json: any) {
+    protected convertJSONToQuestion(json: IdiomJSON) {   
         this.word = json.word;
         this.sentence = json.sentence;
         this.translation = json.translation;

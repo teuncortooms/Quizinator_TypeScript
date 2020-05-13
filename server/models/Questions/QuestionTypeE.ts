@@ -1,4 +1,4 @@
-class ExerciseQuestionTypeE extends ExerciseQuestion {
+class QuestionTypeE extends Question {
     // Type E: "Translate the words into English."
 
     // override

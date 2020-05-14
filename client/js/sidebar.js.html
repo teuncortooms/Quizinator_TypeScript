@@ -24,31 +24,43 @@
      * Functions to load form
      */
     function loadUnits() {
-        let option = document.createElement("OPTION");
-        option.setAttribute("label", "Loading units...")
-        option.setAttribute("id", "loadingUnits");
-        document.getElementById("units").innerHTML = '';
-        document.getElementById("units").appendChild(option);
+        disableTopButtons();
+        document.getElementById("unitsStatus").setAttribute("label", "Loading units...");
+        document.getElementById("unitsStatus").hidden = false;
+        while (document.getElementById("units").childNodes.length > 2) {
+            document.getElementById("units").removeChild(
+                document.getElementById("units").lastChild
+            );
+        }
         google.script.run
             .withSuccessHandler(addUnits)
+            .withFailureHandler(enableTopButtons)
             .getUniqueUnitsFromSheet();
     }
 
+    function disableTopButtons() {
+        document.getElementById('buttonUnits').disabled = true;
+        document.getElementById('buttonExample').disabled = true;
+    }
+
+    function enableTopButtons() {
+        document.getElementById('buttonUnits').disabled = false;
+        document.getElementById('buttonExample').disabled = false;
+    }
+
     function loadTypes() {
-        let option = document.createElement("OPTION")
-        option.setAttribute("label", "Loading exercises...")
-        option.setAttribute("id", "loadingExercises");
-        document.getElementById("exercises").innerHTML = '';
-        document.getElementById("exercises").appendChild(option);
+        document.getElementById("exercisesStatus").innerHTML = 'Loading exercises...';
+        document.getElementById("exercisesStatus").hidden = false;
         google.script.run
             .withSuccessHandler(addExercises)
             .getExerciseTypesWithDescriptions();
     }
 
     function createExample() {
+        disableTopButtons();
         google.script.run
             .withSuccessHandler(loadUnits)
-            .createExampleSheetAndReturnUnits();
+            .createExampleSheetAndGetUniqueUnits();
     }
 
     function addUnits(units) {
@@ -60,21 +72,28 @@
                 option.setAttribute("id", units[i]);
                 option.setAttribute("value", units[i]);
                 option.setAttribute("label", units[i]);
-                option.setAttribute("style", "text-align:left");
-                option.setAttribute("onclick", "document.getElementById('inputName').value='Quiz Unit " + unitno + " version " + getDateAndTime() + "'");
+                option.setAttribute("onclick", "document.getElementById('inputName').value='Quiz Unit " +
+                    unitno + " version " + getDateAndTime() + "'");
 
                 document.getElementById("units").appendChild(option);
             }
-            document.getElementById("loadingUnits").remove();
+            document.getElementById("unitsStatus").hidden = true;
+            //success
+            const MSG = "Units successfully loaded. Choose one or more units that you wish to include in your quiz," +
+                " and then set up your quiz below.";
+            document.getElementById("help-message").innerHTML = MSG;
+            document.getElementById("help-message").setAttribute("class", "success grey");
+            document.getElementById("help-message").hidden = false;
         } catch (error) {
-            if (error instanceof RangeError) {
-                document.getElementById("unitsMessage")
-                    .setAttribute("label", "No units found.");
-            } else {
-                document.getElementById("unitsMessage")
-                    .setAttribute("label", "Failed to load units.");
-            }
+            const MSG = "Click the button Example Sheet to create a sheet that functions with this " +
+                "addon. You can modify the sheet to contain your own idioms.";
+            document.getElementById("unitsStatus").setAttribute("label", "Failed to load units.");
+            document.getElementById("unitsStatus").hidden = false;
+            document.getElementById("help-message").innerHTML = MSG;
+            document.getElementById("help-message").setAttribute("class", "info grey");
+            document.getElementById("help-message").hidden = false;
         }
+        enableTopButtons()
     }
 
     function addExercises(descriptions) {
@@ -90,11 +109,10 @@
 
             div.setAttribute("class", "exercise")
             selectLabel.setAttribute("for", id);
-            selectLabel.innerHTML = `<b>Exercise ${i + 1}</b>`;
+            selectLabel.innerHTML = `Exercise ${i + 1}`;
 
             select.setAttribute("id", id);
             select.setAttribute("name", "userinput_ExerciseTypes");
-            select.setAttribute("style", "width:250px");
             select.required = true;
             for (let type in descriptions) {
                 let option = document.createElement("OPTION");
@@ -106,12 +124,14 @@
                 select.childNodes[i].selected = true;
             }
 
+            howManyLabel.setAttribute("for", "howmany");
             howManyLabel.innerHTML = "With how many questions? ";
 
+            howMany.setAttribute("class", "tb_small");
             howMany.setAttribute("name", "userinput_ExerciseSizes");
             howMany.setAttribute("type", "number");
             howMany.setAttribute("value", [5, 8, 10][i] || 5); // default sizes
-            howMany.setAttribute("style", "width:45px");
+            // howMany.setAttribute("style", "width:45px");
             howMany.required = true;
 
             div.appendChild(selectLabel);
@@ -120,7 +140,7 @@
             div.appendChild(howMany);
             document.getElementById("exercises").appendChild(div);
         }
-        document.getElementById("loadingExercises").remove();
+        document.getElementById("exercisesStatus").hidden = true;
     }
 
     function setDefaultTitle() {
@@ -153,7 +173,7 @@
      */
     function handleFormSubmit(formObject) {
         document.getElementById('submit').disabled = true;
-        document.getElementById('msg').innerHTML = "Creating quiz...";
+        document.getElementById('submitStatus').innerHTML = "Creating quiz...";
         google.script.run
             .withFailureHandler(onFailure)
             .withSuccessHandler(onSuccess)
@@ -162,13 +182,13 @@
 
     function onFailure(error) {
         document.getElementById('submit').disabled = false;
-        document.getElementById('msg').innerHTML =
+        document.getElementById('submitStatus').innerHTML =
             "ERROR: " + error.message + ". Please try again.";
     }
 
     function onSuccess() {
         document.getElementById('submit').disabled = false;
-        document.getElementById('msg').innerHTML =
+        document.getElementById('submitStatus').innerHTML =
             "Success";
     }
 </script>

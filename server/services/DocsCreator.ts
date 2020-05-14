@@ -18,16 +18,24 @@ class DocsCreator {
 
     private openSuccessDialog() {
         let successMessage = HtmlService.createHtmlOutput(''
-            + 'Files successfully created. Click the links.<br><br>'
-            + 'Your quiz: <a target=_blank href="' + this.QuizDoc.getUrl() + '">'
-            + this.QuizDoc.getName() + '</a><br>'
-            + 'Answer key: <a target=_blank href="' + this.AnswerKeyDoc.getUrl() + '">'
-            + this.AnswerKeyDoc.getName() + '</a>');
+            + `Files successfully created. Click the links.<br><br>`
+            + `Your quiz: <br>`
+            + `<a target=_blank href="${this.QuizDoc.getUrl()}">`
+            + `${this.QuizDoc.getName()}</a><br>`
+            + `<br>`
+            + `Answer key: <br>`
+            + `<a target=_blank href="${this.AnswerKeyDoc.getUrl()}">`
+            + `${this.AnswerKeyDoc.getName()}</a>`
+            + `${this.norm ? " (including a grades table!)" : ""}`
+        );
         SpreadsheetApp.getUi().showModalDialog(successMessage, 'Success');
     }
 
     private setNorm(percentage: any, other_percentage: any) {
-        if (percentage == 'other') {
+        if (percentage == 'dontbother') {
+            this.norm = null;
+        }
+        else if (percentage == 'other') {
             this.norm = Number(other_percentage);
         }
         else {
@@ -100,12 +108,12 @@ class DocsCreator {
                     foundText.replaceText("<u>", "");
                     foundText.replaceText("<\/u>", "");
                     foundElement = body.findText(findMe, foundElement);
-                    
+
                 }
             }
 
         }
-        if (type == "key") {
+        if (type == "key" && this.norm) {
             let gradeInfo = this.getGradingInfo(quiz);
             doc.getBody().editAsText().appendText("\r\r");
             doc.getBody().appendTable(gradeInfo[0]);
@@ -123,8 +131,8 @@ class DocsCreator {
             maxPoints += ex.Questions.length;
         }
 
-        let normTable: any[][] = [["Max Punten: " + maxPoints + "\r" + norm + "% goed = " + Math.round(norm * maxPoints) / 100 + " punten = cijfer 6"]];
-        let gradeTable: any[][] = [["aantal goed", "aantal fout", "cijfer"]];
+        let normTable: any[][] = [["Max points: " + maxPoints + "\r" + norm + "% correct = " + Math.round(norm * maxPoints) / 100 + " points = grade 6"]];
+        let gradeTable: any[][] = [["total correct", "total incorrect", "grade"]];
 
         for (let i = 0; i < maxPoints; i++) {
             let cijfer = Math.round((10 - i * 4 / (maxPoints - norm / 100 * maxPoints)) * 10) / 10

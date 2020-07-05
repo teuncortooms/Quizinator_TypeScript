@@ -1,8 +1,8 @@
 class QuizDesigner {
-    private idiomsManager: IdiomsSupplier;
+    private idiomsSupplier: IdiomsSupplier;
     private quiz: Quiz;
 
-    get IdiomsManager() { return this.idiomsManager };
+    get IdiomsManager() { return this.idiomsSupplier };
     get Quiz() { return this.quiz };
 
     public constructor(params: QuizDesignerConfig = {} as QuizDesignerConfig) {
@@ -22,11 +22,11 @@ class QuizDesigner {
 
     private Init(quiz: Quiz, idiomsManager: IdiomsSupplier) {
         this.quiz = quiz;
-        this.idiomsManager = idiomsManager;
+        this.idiomsSupplier = idiomsManager;
     }
 
     private Load(cachehelper: CacheHelper) {
-        this.idiomsManager = new IdiomsSupplier({ cachehelper });
+        this.idiomsSupplier = new IdiomsSupplier({ cachehelper });
         this.quiz = new Quiz({ cachehelper });
     }
 
@@ -35,9 +35,9 @@ class QuizDesigner {
         let newIdiom: Idiom;
 
         oldIdiomId = this.quiz.Exercises[exerciseIndex].Questions[questionIndex].IdiomId;
-        newIdiom = this.idiomsManager.GetIdiom(newIdiomId);
+        newIdiom = this.idiomsSupplier.GetIdiom(newIdiomId);
 
-        this.idiomsManager.ReplaceIdiom(oldIdiomId, newIdiomId);
+        this.idiomsSupplier.ReplaceIdiom(oldIdiomId, newIdiomId);
         this.quiz.Exercises[exerciseIndex].ReplaceQuestion(questionIndex, newIdiom);
 
         this.save();
@@ -46,7 +46,7 @@ class QuizDesigner {
     private save() {
         let cachehelper: CacheHelper = new CacheHelper;
         cachehelper.Clear();
-        cachehelper.Save('idiomsManager', this.idiomsManager);
+        cachehelper.Save('idiomsManager', this.idiomsSupplier);
         cachehelper.Save('quiz', this.quiz);
     }
 }

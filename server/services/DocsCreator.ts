@@ -53,7 +53,7 @@ class DocsCreator {
         body.insertParagraph(0, doc.getName()).setHeading(DocumentApp.ParagraphHeading.HEADING1);
 
         if (type == "key" && this.quizDoc) {
-            body.appendParagraph("Link to SO").editAsText().setLinkUrl(this.quizDoc.getUrl()).appendText("\r");
+            body.appendParagraph("Link to Quiz Doc").editAsText().setLinkUrl(this.quizDoc.getUrl()).appendText("\r");
         }
 
         // for every exercise

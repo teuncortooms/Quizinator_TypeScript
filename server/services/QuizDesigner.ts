@@ -46,6 +46,7 @@ class QuizDesigner {
     private save() {
         let cachehelper: CacheHelper = new CacheHelper;
         cachehelper.Clear();
+        // NB: saves dtos!
         cachehelper.Save('idiomsManager', this.idiomsSupplier);
         cachehelper.Save('quiz', this.quiz);
     }

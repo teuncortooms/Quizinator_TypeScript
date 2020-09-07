@@ -9,13 +9,14 @@ abstract class Question extends Idiom {
         super();
         let {
             idiom = null,
-            questionJSON = null
+            questionDto: questionDto = null
         } = params;
         if (idiom) {
             this.convertIdiomToQuestion(idiom);
         }
-        else if (questionJSON) {
-            this.convertJSONToQuestion(questionJSON);
+        else if (questionDto) {
+            // TODO: finish Mapper to handle mappings
+            this.convertJSONToQuestion(questionDto);
         }
         else throw "Constructor parameters missing!";
     }
@@ -29,13 +30,13 @@ abstract class Question extends Idiom {
         this.setAnswerText();
     }
 
-    protected convertJSONToQuestion(json: QuestionJSON) {
-        this.idiomId = json.idiomId;
-        this.word = json.word;
-        this.sentence = json.sentence;
-        this.translation = json.translation;
-        this.questionText = json.questionText;
-        this.answerText = json.answerText;
+    protected convertJSONToQuestion(dto: QuestionDto) {
+        this.idiomId = dto.idiomId;
+        this.word = dto.word;
+        this.sentence = dto.sentence;
+        this.translation = dto.translation;
+        this.questionText = dto.questionText;
+        this.answerText = dto.answerText;
     }
 
     protected abstract setQuestionText(): void;

@@ -9,34 +9,16 @@ class Idiom {
     get Sentence(): string { return this.sentence; }
     get Translation(): string { return this.translation; }
 
-    public constructor(params: IdiomConfig = {} as IdiomConfig) {
-        let {
-            id = null,
-            rowData = null,
-            idiomJSON = null
-        } = params;
-        if (idiomJSON)
-            this.convertJSONToQuestion(idiomJSON)
-        else if (id && rowData)
-            this.setMembersFromRowData(id, rowData);
-    }
-
-    private setMembersFromRowData(id: number, rowData: string[]) {
-        const wordCol = 0;
-        const translationCol = 1;
-        const sentenceCol = 2;
-
-        this.word = this.stripLexicalInfoFromWord(rowData[wordCol]);
-        this.sentence = rowData[sentenceCol];
-        this.translation = rowData[translationCol];
+    public constructor(
+        id: number = null,
+        word: string = null,
+        sentence: string = null,
+        translation: string = null
+    ) {
+        this.word = this.stripLexicalInfoFromWord(word);
+        this.sentence = sentence;
+        this.translation = translation;
         this.idiomId = id;
-    }
-
-    protected convertJSONToQuestion(json: IdiomJSON) {   
-        this.word = json.word;
-        this.sentence = json.sentence;
-        this.translation = json.translation;
-        this.idiomId = json.idiomId;
     }
 
     protected stripLexicalInfoFromWord(word: string) {

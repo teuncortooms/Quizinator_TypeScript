@@ -1,5 +1,5 @@
-interface IdiomJSON {
-    word: string;
+class IdiomDto {
+    public word: string;
     sentence: string;
     translation: string;
     idiomId: number;

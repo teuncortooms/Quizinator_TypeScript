@@ -28,15 +28,15 @@ class Quiz {
 
     private Load(cachehelper: CacheHelper) {
         let str = cachehelper.Load('quiz');
-        let json = JSON.parse(str);
-        this.title = json.title;
+        let quizDto: QuizDto = JSON.parse(str);
+        this.title = quizDto.title;
         this.exercises = [];
-        for (let i = 0; i < json.exercises.length; i++) {
-            let exerciseJSON = json.exercises[i];
+        for (let i = 0; i < quizDto.exercises.length; i++) {
+            let exerciseDto: ExerciseDto = quizDto.exercises[i];
             this.exercises.push(ExerciseFactory.Create({
-                type: exerciseJSON.type,
-                description: exerciseJSON.description,
-                questionsJSON: exerciseJSON.questions
+                type: exerciseDto.type,
+                description: exerciseDto.description,
+                questionsDto: exerciseDto.questions
             }));
         }
     }

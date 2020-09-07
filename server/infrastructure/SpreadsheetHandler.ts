@@ -1,54 +1,27 @@
 class SpreadsheetHandler {
-    private spreadsheetId: any;
-    private sheet: any;
+    private spreadsheetId: GoogleAppsScript.Spreadsheet.Spreadsheet;
+    private activeSheet: any;
+
+    set ActiveSheet(sheet: any) {
+        this.spreadsheetId.setActiveSheet(sheet);
+        this.activeSheet = sheet;
+    }
 
     public constructor() {
         this.spreadsheetId = SpreadsheetApp.getActive();
-        this.sheet = this.spreadsheetId.getActiveSheet();
+        this.activeSheet = this.spreadsheetId.getActiveSheet();
     }
 
-    get Data(): string[][] { return this.sheet.getDataRange().getValues(); };
-
-    get Units(): string[] {
-        let data = this.Data;
-
-        // Find all unique units in sheet (for user selection in sidebar)
-        let unitCol = 3;
-        let units = [];
-        let uniqueunits;
-        let excludes = ["", "unit", "units", "Unit", "Units"];
-
-        // get every unit of every row
-        for (let i = 0; i < data.length; i++) {
-            let unit = data[i][unitCol];
-            units.push(unit);
-        };
-
-        // filter unique units
-        uniqueunits = units.filter(function (value, index, arr) {
-            return arr.indexOf(value) === index;
-        });
-
-        // filter out non-units
-        for (let j = 0; j < excludes.length; j++) {
-            let index = uniqueunits.indexOf(excludes[j]);
-            if (index > -1) {
-                uniqueunits.splice(index, 1);
-            }
-        }
-
-        return uniqueunits;
-    }
+    get Data(): string[][] { return this.activeSheet.getDataRange().getValues(); };
 
     public createExampleSheet() {
         let exampleSheet = this.spreadsheetId.getSheetByName("Example sheet");
         if (exampleSheet != null) {
-            this.sheet = exampleSheet;
+            this.ActiveSheet = exampleSheet;
         }
         else {
-            this.sheet = this.spreadsheetId.insertSheet('Example sheet');
+            this.ActiveSheet = this.spreadsheetId.insertSheet('Example sheet');
         }
-        this.spreadsheetId.setActiveSheet(this.sheet);
         let values = [
             ["Word", "Translation", "Example sentence", "Unit"],
             ["nice adj", "mooi, lekker", "If the weather isn’t going to be nice, let’s stay in.", "Unit 1"],
@@ -86,16 +59,16 @@ class SpreadsheetHandler {
             ["libidinous", "wellustig", "The child should be kept away from libidinous movies.", "Unit 3"],
             ["revelry", "feestvreugde", "I called the police when my neighbours refused to settle down and end their revelry.", "Unit 3"]
         ];
-        this.sheet.getRange("A1:D35").setValues(values);
-        if (this.sheet.getFilter() == null) {
-            this.sheet.getRange("1:35").createFilter();
+        this.activeSheet.getRange("A1:D35").setValues(values);
+        if (this.activeSheet.getFilter() == null) {
+            this.activeSheet.getRange("1:35").createFilter();
         }
-        this.sheet.getRange("A2")
+        this.activeSheet.getRange("A2")
             .setNote("lexical info like (v), (n), (adj) does not need to be removed for the addon to function");
-        this.sheet.setFrozenRows(1);
-        this.sheet.autoResizeColumn(1);
-        this.sheet.autoResizeColumn(2);
-        this.sheet.setColumnWidth(3, 400);
-        this.sheet.autoResizeColumn(4);
+        this.activeSheet.setFrozenRows(1);
+        this.activeSheet.autoResizeColumn(1);
+        this.activeSheet.autoResizeColumn(2);
+        this.activeSheet.setColumnWidth(3, 400);
+        this.activeSheet.autoResizeColumn(4);
     }
 }

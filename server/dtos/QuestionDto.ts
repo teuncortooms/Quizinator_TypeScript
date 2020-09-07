@@ -1,4 +1,4 @@
-interface QuestionJSON {
+interface QuestionDto {
     word: string;
     sentence: string;
     translation: string;

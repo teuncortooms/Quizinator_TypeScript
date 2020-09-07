@@ -4,25 +4,25 @@ class QuestionFactory {
         let {
             type,
             idiom = null,
-            questionJSON = null,
+            questionDto: questionDto = null,
         } = params;
         console.log(params);
         let question: Question;
         switch (type) {
             case 'A':
-                question = new QuestionTypeA({ idiom, questionJSON });
+                question = new QuestionTypeA({ idiom, questionDto: questionDto });
                 break;
             case 'B':
-                question = new QuestionTypeB({ idiom, questionJSON });
+                question = new QuestionTypeB({ idiom, questionDto: questionDto });
                 break;
             case 'C':
-                question = new QuestionTypeC({ idiom, questionJSON });
+                question = new QuestionTypeC({ idiom, questionDto: questionDto });
                 break;
             case 'D':
-                question = new QuestionTypeD({ idiom, questionJSON });
+                question = new QuestionTypeD({ idiom, questionDto: questionDto });
                 break;
             case 'E':
-                question = new QuestionTypeE({ idiom, questionJSON });
+                question = new QuestionTypeE({ idiom, questionDto: questionDto });
                 break;
             default: throw "Unknown question type: " + type;
         }

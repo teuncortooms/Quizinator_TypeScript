@@ -14,13 +14,13 @@ class Exercise {
             type = null,
             description = null,
             idioms = null,
-            questionsJSON = null
+            questionsDto: questionsDto = null
         } = params;
         this.type = type;
         this.description = description;
         this.questions = [];
-        if (questionsJSON)
-            this.AddQuestionsFromJSON(questionsJSON);
+        if (questionsDto)
+            this.AddQuestionsFromJSON(questionsDto);
         else if (idioms)
             this.AddQuestionsFromIdioms(idioms);
         else throw "Constructor parameters missing!";
@@ -32,11 +32,11 @@ class Exercise {
         };
     }
 
-    private AddQuestionsFromJSON(questionsJSON: QuestionJSON[]) {
-        for (let i = 0; i < questionsJSON.length; i++) {
-            let question = QuestionFactory.Create({
+    private AddQuestionsFromJSON(questionsDto: QuestionDto[]) {
+        for (let i = 0; i < questionsDto.length; i++) {
+            let question: Question = QuestionFactory.Create({
                 type: this.type,
-                questionJSON: questionsJSON[i]
+                questionDto: questionsDto[i]
             });
             this.questions.push(question);
         };

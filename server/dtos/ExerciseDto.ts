@@ -1,6 +1,6 @@
-interface ExerciseJSON {
+interface ExerciseDto {
     type: string;
     description: string;
-    questions: QuestionJSON[];
+    questions: QuestionDto[];
     box?: string[][];
 }

@@ -2,6 +2,6 @@ interface ExerciseConfig {
     type?: string;
     description?: string;
     idioms?: Idiom[];
-    questionsJSON?: QuestionJSON[];
+    questionsDto?: QuestionDto[];
     box?: string[][];
 }

@@ -49,11 +49,12 @@ class IdiomsSupplier {
 
     private Load(cachehelper: CacheHelper) {
         let str = cachehelper.Load('idiomsManager')
-        let json: IdiomsSupplierJSON = JSON.parse(str);
+        let supplierDto: IdiomsSupplierDto = JSON.parse(str);
         this.idioms = [];
-        this.selectedIndices = json.selectedIndices;
-        for (let i = 0; i < json.idioms.length; i++) {
-            this.idioms[i] = new Idiom({idiomJSON: json.idioms[i]});
+        this.selectedIndices = supplierDto.selectedIndices;
+        for (let i = 0; i < supplierDto.idioms.length; i++) {
+            // TODO: dependency injection!
+            this.idioms[i] = (new Mapper).DtoToIdiom(supplierDto.idioms[i]);
         }
     }
 
@@ -88,25 +89,10 @@ class IdiomsSupplier {
         return requestedIdiom;
     }
 
-    private findIdioms(units: string[], spreadsheet: SpreadsheetHandler): Idiom[] {
-        let data = spreadsheet.Data;
-        let unitCol = 3;
-        let idioms: Idiom[] = [];
-        // for every selected unit
-        for (let i = 0; i < units.length; i++) {
-            // check every row in sheetdata
-            for (let row in data) {
-                // if unit matches
-                if (data[row][unitCol] == units[i]) {
-                    // make new idiom
-                    let rowData = data[row];
-                    let idiom = new Idiom({id: Number(row), rowData});
-                    // add to idioms
-                    idioms.push(idiom);
-                };
-            };
-        };
-        return idioms;
+    private findIdioms(units: string[], SSHandler: SpreadsheetHandler): Idiom[] {
+        // TODO: dependency injection!
+        let repo: IdiomsRepository = new IdiomsRepository(SSHandler);
+        return repo.GetIdiomsFilteredByUnits(units);
     };
 
     private checkSize(selectionSize: any) {

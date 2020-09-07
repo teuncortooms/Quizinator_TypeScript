@@ -4,13 +4,16 @@ function openSidebar() {
 }
 
 function getUniqueUnitsFromSheet() {
-  return (new SpreadsheetHandler).Units;
+  let context: SpreadsheetHandler = new SpreadsheetHandler();
+  let repo: IdiomsRepository = new IdiomsRepository(context);
+  return repo.GetUniqueUnits();
 }
 
 function createExampleSheetAndGetUniqueUnits() {
-  let SSHandler = new SpreadsheetHandler;
+  let SSHandler: SpreadsheetHandler = new SpreadsheetHandler();
   SSHandler.createExampleSheet();
-  return SSHandler.Units;
+  let repo: IdiomsRepository = new IdiomsRepository(SSHandler);
+  return repo.GetUniqueUnits();
 }
 
 function getExerciseTypesWithDescriptions() {
@@ -25,12 +28,12 @@ function createAndPreviewQuiz(formObject: FormData) {
     spreadsheetHandler: new SpreadsheetHandler()
   });
   let quiz = new Quiz({
-    title: input.Title, 
+    title: input.Title,
     exerciseTypes: input.ExerciseTypes,
     exerciseSizes: input.ExerciseSizes,
     idioms: idiomsManager.SelectedIdioms
   });
-  let quizDesigner = new QuizDesigner({quiz, idiomsManager});
+  let quizDesigner = new QuizDesigner({ quiz, idiomsManager });
 
   openPreview(quiz);
 }

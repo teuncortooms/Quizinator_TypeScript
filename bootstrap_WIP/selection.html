@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Bootstrap test</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="stylesheet.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</head>
+
+<body>
+    <div class="container">
+        <div class="progress">
+            <div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100" style="width:30%">
+                30%
+            </div>
+        </div>
+        <h2>Selection screen</h2>
+        <form class="form-horizontal">
+            <div class="form-group">
+                <div class="col-sm-offset-3 col-sm-9">
+                    <button class="btn btn-default" id='buttonUnits' onclick='loadForm()'>Click here to reload the
+                        form</button>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-sm-3" for="units">Unit(s)</label>
+                <div class="col-sm-9">
+                    <select class="form-control" id='units' name='inputUnits' required multiple></select>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-sm-3" for="inputName">Title</label>
+                <div class="col-sm-9">
+                    <input type='text' class="form-control" id='title' value='Title' name='inputName' required />
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-sm-3" for="type">Exercise 1</label>
+                <div class="col-sm-6">
+                    <select class="form-control" id="type" name='inputExTypeArr' required>
+                        <option value=1 selected>Type A: Translate the underlined words into Dutch.</option>
+                        <option value=2>Type B: Complete the sentences with words from the box and translate into
+                            English.
+                        </option>
+                        <option value=3>Type C: Complete the sentences with the translation of the Dutch words.</option>
+                    </select>
+                </div>
+                <label class="control-label col-sm-2 howmany" for="amount">How many items?</label>
+                <div class="col-sm-1">
+                    <input type='number' class="form-control" id="amount" value=5 name='inputItemsPerExArr' required />
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-sm-3" for="type">Exercise 2</label>
+                <div class="col-sm-6">
+                    <select class="form-control" id="type" name='inputExTypeArr' required>
+                        <option value=1>Type A: Translate the underlined words into Dutch.</option>
+                        <option value=2 selected>Type B: Complete the sentences with words from the box and translate
+                            into
+                            English.
+                        </option>
+                        <option value=3>Type C: Complete the sentences with the translation of the Dutch words.</option>
+                    </select>
+                </div>
+                <label class="control-label col-sm-2 howmany" for="amount">How many items?</label>
+                <div class="col-sm-1">
+                    <input type='number' class="form-control" id="amount" value=8 name='inputItemsPerExArr' required />
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-sm-3" for="type">Exercise 3</label>
+                <div class="col-sm-6">
+                    <select class="form-control" id="type" name='inputExTypeArr' required>
+                        <option value=1>Type A: Translate the underlined words into Dutch.</option>
+                        <option value=2>Type B: Complete the sentences with words from the box and translate into
+                            English.
+                        </option>
+                        <option value=3 selected>Type C: Complete the sentences with the translation of the Dutch words.
+                        </option>
+                    </select>
+                </div>
+                <label class="control-label col-sm-2 howmany" for="amount">How many items?</label>
+                <div class="col-sm-1">
+                    <input type='number' class="form-control" id="amount" value=10 name='inputItemsPerExArr' required />
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-offset-3 col-sm-9">
+                    <button type='submit' class="btn btn-primary">Preview Quiz</button>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-offset-3 col-sm-9 alert alert-danger" id='msg' hidden></div>
+            </div>
+        </form>
+    </div>
+</body>
+
+</html>

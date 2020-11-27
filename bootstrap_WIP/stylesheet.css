@@ -1,0 +1,21 @@
+.sentence {
+    background-color: rgb(255, 250, 200);
+}
+
+.answer {
+    background-color: rgb(193, 255, 169);
+}
+
+.form-horizontal .howmany {
+    text-align: left;
+    font-weight: normal;
+}
+
+.progress {
+    margin: 30px;
+}
+
+h2 {
+    text-align: center;
+    margin: 30px;
+}
